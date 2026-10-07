@@ -1,0 +1,977 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body><title>상하이 여행북 1015</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&family=Noto+Sans+SC:wght@500;700&display=swap">
+<style>
+/* Layout: 앱처럼 4개 화면(일정·준비·교통돈·쇼핑맛집). 일정 화면 = 코스 선택 → 고정 날짜바 → 그날 지도 → 번호 매긴 타임라인 → 이전/다음 날. */
+:root{
+  --bg:#EEF1F4; --surface:#FFFFFF; --sunk:#E3E8EE; --ink:#15202D; --muted:#5A6676; --line:#D5DCE4;
+  --red:#AE2F27; --brass:#8F661A; --jade:#1B6F61; --sky:#2E5E9E; --river:#9CB9DB;
+  --red-soft:#F6E3E1; --brass-soft:#F3EAD6; --jade-soft:#DDEFEA; --sky-soft:#E0E9F5;
+  --d1:var(--red); --d2:var(--brass); --d3:var(--jade); --d4:var(--sky);
+  --f-display:"Black Han Sans","IBM Plex Sans KR",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --f-zh:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  --r:14px; --navh:52px; --dayh:58px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C131D; --surface:#141E2C; --sunk:#1B2738; --ink:#E8EDF3; --muted:#9BA7B7; --line:#26354A;
+  --red:#E5675F; --brass:#D6A94E; --jade:#55BDA9; --sky:#7EA8E6; --river:#27405F;
+  --red-soft:#3A1F22; --brass-soft:#352A15; --jade-soft:#15322D; --sky-soft:#1A2A42;
+  color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0C131D; --surface:#141E2C; --sunk:#1B2738; --ink:#E8EDF3; --muted:#9BA7B7; --line:#26354A;
+  --red:#E5675F; --brass:#D6A94E; --jade:#55BDA9; --sky:#7EA8E6; --river:#27405F;
+  --red-soft:#3A1F22; --brass-soft:#352A15; --jade-soft:#15322D; --sky-soft:#1A2A42;
+  color-scheme:dark;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;margin:0;-webkit-text-size-adjust:100%}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:0 80px}
+a{color:var(--sky);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--brass);outline-offset:2px;border-radius:6px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h2{font-size:25px;line-height:1.2}
+h3{font-size:19px;line-height:1.3}
+h4{font-size:16px;margin:0;line-height:1.45}
+p{margin:0}
+.muted{color:var(--muted)} .small{font-size:13px} .num{font-variant-numeric:tabular-nums}
+
+/* 중국어 + (읽는 법 · 뜻) */
+x-zh{font-family:var(--f-zh);font-weight:500;white-space:normal}
+x-zh::after{font-family:var(--f-body);font-weight:400;color:var(--muted);font-size:.86em;margin-left:2px}
+x-zh[r][m]::after{content:"(" attr(r) " · " attr(m) ")"}
+x-zh[r]:not([m])::after{content:"(" attr(r) ")"}
+.bigzh x-zh::after{display:block;font-size:14px;margin:4px 0 0}
+
+/* Hero */
+.hero{padding-block:26px 16px;display:grid;gap:12px}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hero .zhbig{font-family:var(--f-zh);font-weight:700;font-size:52px;line-height:.9;color:var(--red);letter-spacing:.04em}
+.hero h1{font-size:28px;line-height:1.15}
+.dday{font-family:var(--f-display);font-size:15px;background:var(--red);color:var(--surface);padding:6px 12px;border-radius:999px;white-space:nowrap}
+.flights{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.flight{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
+.flight .lbl{font-size:11.5px;letter-spacing:.06em;color:var(--muted)}
+.flight .route{font-family:var(--f-display);font-size:17px;line-height:1.3}
+
+/* 메인 화면 탭 */
+nav.views{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);margin-inline:-16px;padding:8px 16px;border-bottom:1px solid var(--line)}
+nav.views div{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--sunk);border-radius:12px;padding:4px}
+nav.views button{font:inherit;font-size:14px;font-weight:700;border:0;background:transparent;color:var(--muted);padding:8px 2px;border-radius:9px;cursor:pointer}
+nav.views button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+
+.view{display:grid;gap:16px;padding-top:18px}
+.view[hidden]{display:none!important}
+.sec-head{display:grid;gap:4px}
+.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--brass);font-weight:700}
+.lead{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+
+/* 코스 선택 */
+.courses{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.courses button{font:inherit;text-align:left;cursor:pointer;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;gap:2px;align-content:start;min-width:0}
+.courses button b{font-family:var(--f-display);font-weight:400;font-size:24px;line-height:1;color:var(--brass)}
+.courses button strong{font-size:13.5px;line-height:1.3}
+.courses button span{font-size:11.5px;color:var(--muted);line-height:1.35}
+.courses button[aria-pressed="true"]{border-color:var(--brass);box-shadow:inset 0 0 0 1px var(--brass);background:var(--brass-soft)}
+.course-desc{font-size:13.5px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+
+/* 날짜 바 (고정) */
+.daybar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--navh));z-index:15;background:var(--bg);margin-inline:-16px;padding:6px 16px 8px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;border-bottom:1px solid var(--line)}
+.daybar button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:5px 2px;display:grid;text-align:center;line-height:1.25}
+.daybar button b{font-family:var(--f-display);font-weight:400;font-size:16px}
+.daybar button span{font-size:11px;color:var(--muted)}
+.daybar button[aria-selected="true"]{border-color:var(--dc);background:var(--dsoft);box-shadow:inset 0 -3px 0 var(--dc)}
+.dc1{--dc:var(--d1);--dsoft:var(--red-soft)} .dc2{--dc:var(--d2);--dsoft:var(--brass-soft)}
+.dc3{--dc:var(--d3);--dsoft:var(--jade-soft)} .dc4{--dc:var(--d4);--dsoft:var(--sky-soft)}
+
+#day{display:grid;gap:14px;scroll-margin-top:calc(var(--navh) + var(--dayh) + 8px);touch-action:pan-y}
+.day-head{display:grid;gap:6px;padding:14px 16px;border-radius:var(--r);background:var(--dsoft)}
+.day-head .tag{font-family:var(--f-display);color:var(--dc);font-size:14px}
+.day-head h3{font-size:21px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;padding:2px 9px;border-radius:999px;background:var(--surface);border:1px solid var(--line);white-space:nowrap}
+.chip.resv{border-color:var(--red);color:var(--red);font-weight:700}
+
+/* 지도 */
+.map{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px;display:grid;gap:6px}
+.map svg{display:block;width:100%;height:auto;touch-action:manipulation}
+.map svg .mk{cursor:pointer}
+.map svg .mk:hover circle{stroke-width:3}
+.map-legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted);padding:0 4px 2px}
+.map-legend i{display:inline-block;width:18px;height:0;border-top:2.5px solid var(--dc);vertical-align:middle;margin-right:5px}
+.map-legend i.dash{border-top-style:dashed}
+.map-list{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12.5px;padding:0 4px 4px}
+.map-list button{font:inherit;border:0;background:none;color:var(--ink);padding:0;cursor:pointer;text-align:left}
+.map-list button b{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--dc);color:var(--surface);font-size:11px;margin-right:4px}
+
+/* 타임라인 */
+.tl{display:grid;gap:0}
+.stop{display:grid;grid-template-columns:50px 1fr;gap:10px;scroll-margin-top:calc(var(--navh) + var(--dayh) + 12px)}
+.stop .t{display:grid;justify-items:end;align-content:start;gap:4px;padding-top:12px}
+.stop .t .no{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--dc);color:var(--surface);font-weight:700;font-size:13px}
+.stop .t .no.h{border-radius:7px;font-size:11px}
+.stop .t .time{font-family:var(--f-display);font-size:14px;color:var(--dc);font-variant-numeric:tabular-nums}
+.stop .c{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 14px 12px;display:grid;gap:8px;min-width:0;transition:box-shadow .3s}
+.stop.flash .c{box-shadow:0 0 0 3px var(--dc)}
+.stop.opt .c{border-style:dashed}
+.stop .hook{font-family:var(--f-display);font-size:17px;line-height:1.4}
+.stop h4 .kind{margin-left:6px}
+.kind{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:1px 8px;border-radius:999px;background:var(--dsoft);color:var(--dc);vertical-align:2px}
+.stop dl{margin:0;display:grid;gap:6px;font-size:14px}
+.stop dt{font-weight:700;font-size:12px;letter-spacing:.04em;color:var(--dc)}
+.stop dd{margin:0}
+.stop ul{margin:0;padding-left:18px}
+.meta{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+.move{display:grid;grid-template-columns:50px 1fr;gap:10px;font-size:13px;color:var(--muted)}
+.move span:last-child{border-left:2px dotted var(--dc);margin-left:12px;padding:8px 0 8px 14px}
+.warn{background:var(--red-soft);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.tip{background:var(--jade-soft);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.daynav{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.daynav button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:12px;text-align:left;display:grid;gap:0}
+.daynav button:last-child{text-align:right}
+.daynav button span{font-size:12px;color:var(--muted)}
+.daynav button b{font-family:var(--f-display);font-weight:400;font-size:16px}
+.daynav button[disabled]{visibility:hidden}
+.swipe-hint{font-size:12px;color:var(--muted);text-align:center}
+
+/* 기타 */
+.taxi{display:grid;gap:6px}
+.taxi .row{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.taxi .zhaddr{font-family:var(--f-zh);font-weight:700;font-size:21px;line-height:1.35;word-break:break-all}
+button.copy{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer}
+.wx{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
+.wx div{background:var(--sunk);border-radius:10px;padding:10px 4px}
+.wx b{display:block;font-family:var(--f-display);font-weight:400;font-size:22px}
+.wx span{font-size:12px;color:var(--muted)}
+.todo-tl{display:grid;border-left:2px solid var(--line);margin-left:6px}
+.todo-tl .step{position:relative;padding:0 0 18px 20px}
+.todo-tl .step::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--brass)}
+.todo-tl .when{font-family:var(--f-display);font-size:16px;color:var(--brass)}
+.todo-tl ul{margin:4px 0 0;padding-left:18px}
+.check-status{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.check-status .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.check-status.live .dot{background:var(--jade)}
+.progress{height:8px;background:var(--sunk);border-radius:999px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--jade);transition:width .3s}
+.checks{display:grid;gap:14px}
+.checks fieldset{border:0;margin:0;padding:0;display:grid;gap:2px}
+.checks legend{font-weight:700;font-size:14px;margin-bottom:4px;color:var(--brass)}
+.checks label{display:flex;gap:10px;align-items:flex-start;padding:7px 4px;border-radius:8px;cursor:pointer}
+.checks label:hover{background:var(--sunk)}
+.checks input{width:18px;height:18px;margin-top:3px;accent-color:var(--jade);flex:none}
+.checks input:checked + span{color:var(--muted);text-decoration:line-through}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:520px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.04em;color:var(--muted);font-weight:700;background:var(--sunk)}
+tr:last-child td{border-bottom:0}
+.ok{color:var(--jade);font-weight:700}
+details.fold{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+details.fold>summary{cursor:pointer;padding:14px 16px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::after{content:"+";color:var(--brass);font-family:var(--f-display);font-size:20px;line-height:1}
+details.fold[open]>summary::after{content:"–"}
+details.fold>.inner{padding:0 16px 16px;display:grid;gap:10px}
+.list{margin:0;padding-left:18px;display:grid;gap:6px}
+.src{font-size:12px;color:var(--muted)} .src a{color:var(--muted)}
+footer{padding-block:30px 0;color:var(--muted);font-size:12.5px;display:grid;gap:6px}
+
+.must-g{display:grid;gap:6px}
+#must{display:grid;gap:14px}
+.must-k{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--brass)}
+.must-i{font:inherit;font-size:13.5px;text-align:left;display:grid;grid-template-columns:34px 1fr;gap:8px;align-items:start;background:var(--sunk);border:0;border-radius:10px;padding:8px 10px;color:var(--ink);cursor:pointer}
+.must-i b{display:grid;place-items:center;height:22px;border-radius:6px;background:var(--dc);color:var(--surface);font-size:11.5px}
+.must-i strong{margin-right:4px}
+.must-i.out{cursor:default;opacity:.8}
+.must-i.out b{background:var(--muted)}
+.bar-card{display:grid;gap:10px;border-color:var(--dc)}
+.note-belly,.note-pass{font-size:13.5px;border-radius:10px;padding:8px 11px;line-height:1.55}
+.note-belly{background:var(--brass-soft)} .note-belly b{color:var(--brass);margin-right:4px}
+.note-pass{background:var(--red-soft)} .note-pass b{color:var(--red);margin-right:4px}
+.resv-card{display:grid;gap:8px;border-color:var(--red);background:var(--red-soft)}
+.gm{font-size:12px;font-weight:700;color:var(--sky);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:1px 9px;white-space:nowrap;background:var(--surface);margin-left:4px;vertical-align:1px}
+.gm:hover{border-color:var(--sky)}
+.gm.am{color:var(--jade)}
+.gm.am:hover{border-color:var(--jade)}
+.gm-name{color:inherit;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.tr-day{display:grid;gap:6px}
+.tr-day h4{font-family:var(--f-display);font-weight:400;color:var(--dc);font-size:16px}
+.tr-row{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;background:var(--sunk);border-radius:10px;padding:8px 10px;font-size:13.5px}
+.tr-row .n{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--dc);color:var(--surface);font-size:11px;font-weight:700}
+.tr-row .kw{font-weight:700}
+.tr-row .alt,.tr-row .memo{display:block;font-size:12px;color:var(--muted);font-weight:400}
+.tr-row button{font:inherit;font-size:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 10px;cursor:pointer;white-space:nowrap}
+.tr-del{font-size:12.5px;background:var(--red-soft);border-radius:10px;padding:8px 10px}
+@media (max-width:420px){
+  .hero .zhbig{font-size:44px} .hero h1{font-size:24px}
+  .flights{grid-template-columns:1fr} .flight .route{font-size:16px}
+  .stop,.move{grid-template-columns:40px 1fr}
+  .courses button{padding:8px} .courses button span{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header class="hero">
+  <div class="hero-top">
+    <div class="zhbig" aria-hidden="true">上海</div>
+    <div class="dday num" id="dday">D-15</div>
+  </div>
+  <h1>상하이 3박 4일 여행북</h1>
+  <p class="muted num">2026.10.15 목 → 10.18 일 · 둘이서 · 점심·저녁만</p>
+  <div class="flights">
+    <div class="flight"><div class="lbl">가는 편 KE887</div><div class="route num">ICN 11:10 → PVG 12:25</div></div>
+    <div class="flight"><div class="lbl">오는 편 KE882</div><div class="route num">PVG 11:10 → ICN 14:20</div></div>
+  </div>
+</header>
+
+<nav class="views" id="views" aria-label="화면">
+  <div role="tablist">
+    <button role="tab" data-view="plan" aria-selected="true">일정</button>
+    <button role="tab" data-view="prep" aria-selected="false">준비</button>
+    <button role="tab" data-view="move" aria-selected="false">교통·돈</button>
+    <button role="tab" data-view="shop" aria-selected="false">쇼핑·맛집</button>
+  </div>
+</nav>
+
+<!-- ================= 일정 ================= -->
+<main class="view" id="v-plan">
+  <div class="daybar" id="daybar" role="tablist" aria-label="날짜"></div>
+  <div id="day" aria-live="polite"></div>
+</main>
+
+<!-- ================= 준비 ================= -->
+<section class="view" id="v-prep" hidden>
+  <div class="card resv-card">
+    <span class="eyebrow">BOOK NOW · 예약 체크</span>
+    <h3>예약 꼭 해야 하는 것 5개</h3>
+    <ol class="list small">
+      <li><b>디즈니 10/17 티켓</b> · 공식 사이트·앱 또는 마이리얼트립 · 1인 ¥629 · 10/10 23:59까지 무료 환불</li>
+      <li><b>ERA 서커스 10/16 19:30</b> · 이미 예매했으면 확인만 · 클룩(공연 3일 전 확정) 또는 공식 사이트 · 환불 불가</li>
+      <li><b>Flair 루프탑 10/15 21:30</b> · ☎ +86 21 2020 1778 또는 <a href="https://www.szuo.com/en/marriott-shasz-1003534/reserve" target="_blank" rel="noopener">TableCheck 온라인 예약</a> · 최소 소비 조건 확인</li>
+      <li><b>미상 프라다 룽자이 10/15 16:00 (예약함)</b> · 위챗 미니프로그램 「迷上Prada荣宅」 · ☎ +86 21 2218 0388 · mishang.rsvn@prada.com</li>
+      <li><b>hoxa bistro 10/15 17:30 테라스</b> · ☎ 189 3093 9307 (테라스 자리 원하면 필수, 실내는 워크인 가능)</li>
+    </ol>
+    <p class="small"><b>예약은 안 되고 당일 원격 줄서기(<x-zh r="파이하오" m="번호표">排号</x-zh>)만 하는 곳</b></p>
+    <ul class="list small">
+      <li>헌지우이치엔 (10/16 21:00) · 공연 끝나자마자 다중뎬핑 앱에서 번호표</li>
+      <li>하이디라오 바리춘톈 푸젠점 (10/17 22:40) · 하이디라오 앱/위챗 미니프로그램에서 원격 줄서기</li>
+      <li>점도덕 (10/16 13:15) · 현장 번호표, 금요일 점심은 대기가 짧은 편</li>
+    </ul>
+  </div>
+
+  <details class="fold" id="openFold">
+    <summary>그날 문 여는지 전부 확인 (23곳)</summary>
+    <div class="inner">
+      <p class="small muted">10/2에 바이두 지도(가게 정보 + 최근 리뷰 날짜)와 공식 사이트로 하나씩 확인했어요. 출발 전날 다중뎬핑에서 한 번 더 보면 완벽해요.</p>
+      <div class="tbl"><table class="num">
+        <thead><tr><th>날짜</th><th>장소 · 가는 시간</th><th>영업시간 (확인처)</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>10/15 목</td><td>디디 공항→숙소 13:20</td><td>24시간 · 알리페이 DiDi</td><td>✅</td></tr>
+          <tr><td>10/15 목</td><td>上汤·云南小馆 14:25</td><td>매일 09:30~22:00 (바이두)</td><td>✅</td></tr>
+          <tr><td>10/15 목</td><td>릴리안 인민광장역 15:05 (선택)</td><td>06:30~21:30 · 환승홀 1-118호 (바이두, 26.3 리뷰)</td><td>✅</td></tr>
+          <tr><td>10/15 목</td><td>임시정부 15:20</td><td>09:00~11:30, 13:30~17:00 · 입장 마감 16:30 (바이두, 26.9 리뷰)</td><td>✅</td></tr>
+          <tr><td>10/15 목</td><td>프라다 룽자이 16:00 (예약함)</td><td>10:00~22:00 (바이두, 26.9 리뷰)</td><td>✅</td></tr>
+          <tr><td>10/15 목</td><td>hoxa bistro 17:30</td><td>매일 11:00~16:30, 17:00~22:30 (바이두, 26.8 리뷰)</td><td>✅</td></tr>
+          <tr><td>10/15 목</td><td>맥도날드 남경동로 353번지 19:00</td><td>06:30~24:00 (바이두)</td><td>✅</td></tr>
+          <tr><td>10/15 목</td><td>와이탄 조명 19:15</td><td>목요일 ~22:00 소등</td><td>✅</td></tr>
+          <tr><td>10/15 목</td><td>황푸강 유람선 20:00 (선택)</td><td>야간편 약 20~30분 간격 · 막차는 현장 확인</td><td>⚠</td></tr>
+          <tr><td>10/15 목</td><td>Flair 21:30</td><td>일~목 12:00~01:00, 저녁 17:30~ (리츠칼튼 공식)</td><td>✅</td></tr>
+          <tr><td>10/16 금</td><td>卷王煎饼 10:00</td><td>매일 10:00~23:00 (바이두)</td><td>✅</td></tr>
+          <tr><td>10/16 금</td><td>ICCF 가든 11:05</td><td>카페 08:00~ 종일 (매체 보도)</td><td>✅</td></tr>
+          <tr><td>10/16 금</td><td>메종 둥량 12:05</td><td>11:00~20:00 (바이두, 26.5 리뷰)</td><td>✅</td></tr>
+          <tr><td>10/16 금</td><td>점도덕 中海环宇荟 13:15</td><td>09:00~21:30 (바이두, 26.9 리뷰)</td><td>✅</td></tr>
+          <tr><td>10/16 금</td><td>1000 Trees 17:00</td><td>외관·강변 24시간, 몰 10:00~22:00</td><td>✅</td></tr>
+          <tr><td>10/16 금</td><td>류원샹 마라탕 18:00</td><td>09:30~20:30 (바이두, 26.9 리뷰)</td><td>✅</td></tr>
+          <tr><td>10/16 금</td><td>ERA 서커스 19:30</td><td>금요일 19:30, 60분판 (공식)</td><td>✅</td></tr>
+          <tr><td>10/16 금</td><td>헌지우이치엔 21:00</td><td>11:00~03:00 (바이두, 26.9 리뷰)</td><td>✅</td></tr>
+          <tr><td>10/17 토</td><td>永和大王(仁济医院店) 07:00</td><td>06:30~ (2025 자료) · 병원 외래동 B1이라 토요일 영업은 현장 확인</td><td>⚠</td></tr>
+          <tr><td>10/17 토</td><td>디즈니 08:00</td><td><b>08:30~22:00</b> · 불꽃 20:00·21:15 · 퍼레이드 12:15·15:45 (공식 캘린더)</td><td>✅</td></tr>
+          <tr><td>10/17 토</td><td>하이디라오 바리춘톈 푸젠점 22:40</td><td>10:00~07:00 (바이두, 26.9 리뷰)</td><td>✅</td></tr>
+          <tr><td>10/18 일</td><td>디디 → 공항 07:50</td><td>24시간</td><td>✅</td></tr>
+          <tr><td>10/18 일</td><td>KE882 11:10</td><td>항공권</td><td>✅</td></tr>
+          <tr><td>—</td><td>하이디라오 장양루점</td><td><b>폐업</b> (바이두 '已关闭') → 푸젠점으로 교체</td><td>❌</td></tr>
+          <tr><td>—</td><td>CONDÉ (리젠트)</td><td>15일 휴무 → 일정에서 뺌</td><td>❌</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </details>
+
+  <details class="fold" id="mustFold">
+    <summary>꼭 갈 곳 19개, 어디에 넣었는지</summary>
+    <div class="inner"><p class="small muted">누르면 일정 탭의 그날로 이동해요.</p><div id="must"></div></div>
+  </details>
+
+
+
+  <div class="sec-head"><span class="eyebrow">BEFORE YOU GO</span><h2>가기 전에 할 일</h2><p class="lead">9/30 기준으로 남은 2주를 이렇게 쓰면 돼요.</p></div>
+  <div class="todo-tl">
+    <div class="step"><div class="when">지금 바로 (~10/3)</div><ul>
+      <li><strong>디즈니 10/17 티켓</strong> 공식가 1인 ¥629. 10/10 23:59까지 무료 환불, 그 뒤 1장당 ¥80 수수료. 여권 번호로 사고 당일 여권 원본으로 입장.</li>
+      <li><strong>예약 3곳</strong>: ① Flair 루프탑 10/15 21:30 (☎ +86 21 2020 1778) ② 프라다 룽자이 10/15 16:00(예약함) — 위챗 미니프로그램 <x-zh r="미상 프라다 룽자이" m="프라다에 반하다">迷上Prada荣宅</x-zh> 또는 +86 21 2218 0388 ③ hoxa bistro 10/15 17:30 테라스 — 전화 189 3093 9307</li>
+      <li>ERA 서커스 10/16 19:30 티켓 확인 (금요일은 60분판)</li>
+      <li>트래블로그 체크카드 발급 신청 (배송 기간 있음)</li>
+    </ul></div>
+    <div class="step"><div class="when">D-10 (~10/5)</div><ul>
+      <li>알리페이 설치 → 한국 번호 가입 → 카드 등록 → 여권 실명인증 → 교통카드·디디 한 번씩 열어서 활성화</li>
+      <li>위챗 가입 (신규 가입은 기존 사용자 인증이 필요할 수 있어요)</li>
+      <li>eSIM/유심 구매 (카톡·인스타 되는 "홍콩 경유")</li>
+      <li><x-zh r="바이두 디투" m="바이두 지도">百度地图</x-zh>·<x-zh r="다중뎬핑" m="중국판 맛집 앱">大众点评</x-zh>·디즈니 앱 설치, 이 페이지 즐겨찾기</li>
+    </ul></div>
+    <div class="step"><div class="when">D-7 (~10/8)</div><ul>
+      <li>보조배터리·어댑터·샤워필터 도착 확인</li>
+      <li>디즈니 앱에 티켓 연결 (Premier Access를 앱에서 사려면 필요)</li>
+      <li>트래블로그에 위안 충전 → 알리페이에 트래블로그 카드 추가</li>
+    </ul></div>
+    <div class="step"><div class="when">D-3 (~10/12)</div><ul>
+      <li><strong>전자입국신고서</strong> <a href="https://s.nia.gov.cn/ArrivalCardFillingPC/" target="_blank" rel="noopener">s.nia.gov.cn</a> 또는 NIA 12367 앱. 제출 후 QR 캡처. 각자 1장씩.</li>
+      <li>일기예보 보고 옷 정하기</li>
+    </ul></div>
+    <div class="step"><div class="when">D-1 (10/14)</div><ul>
+      <li>eSIM 설치, 현금 소액 환전(1인 ¥200~300)</li>
+      <li>보조배터리 단자 절연테이프 또는 개별 파우치</li>
+      <li>인천공항 T2(대한항공) 09:10까지</li>
+    </ul></div>
+  </div>
+  <div class="tip"><strong>비자 필요 없어요.</strong> 한국 여권은 2026년 12월 31일까지 최대 30일 무비자. <span class="src">(<a href="https://kr.trip.com/guide/info/china-visa-free-period.html" target="_blank" rel="noopener">트립닷컴</a>, <a href="https://gwangju.china-consulate.gov.cn/kor/lsfwx/zytz/202511/t20251128_11762658.htm" target="_blank" rel="noopener">주광주 중국총영사관</a>)</span></div>
+
+  <div class="sec-head" style="margin-top:10px"><span class="eyebrow">SHARED CHECKLIST</span><h2>같이 쓰는 체크리스트</h2>
+    <p class="check-status" id="checkStatus"><span class="dot"></span><span id="checkStatusText">불러오는 중…</span></p>
+  </div>
+  <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+  <p class="small muted num" id="progressText">0 / 0</p>
+  <form class="card checks" id="checks" onsubmit="return false">
+    <fieldset><legend>예약 · 서류</legend>
+      <label><input type="checkbox" id="c-passport"><span>여권 유효기간 6개월 이상 (2027.04 이후 만료)</span></label>
+      <label><input type="checkbox" id="c-disney"><span>디즈니 10/17 티켓 2장 (여권 번호로)</span></label>
+      <label><input type="checkbox" id="c-era"><span>ERA 서커스 10/16 19:30 티켓 2장</span></label>
+      <label><input type="checkbox" id="c-flair2"><span>Flair 루프탑 10/15 21:30 예약</span></label>
+      <label><input type="checkbox" id="c-prada"><span>프라다 룽자이 10/15 16:00 예약</span></label>
+      <label><input type="checkbox" id="c-hoxa"><span>hoxa bistro 10/15 17:30 테라스 예약</span></label>
+      <label><input type="checkbox" id="c-arrival"><span>전자입국신고서 작성 + QR 캡처 (각자)</span></label>
+      <label><input type="checkbox" id="c-insurance"><span>여행자보험</span></label>
+    </fieldset>
+    <fieldset><legend>결제 · 통신</legend>
+      <label><input type="checkbox" id="c-alipay"><span>알리페이 가입 + 카드 등록 + 여권 인증</span></label>
+      <label><input type="checkbox" id="c-metroqr"><span>알리페이 교통 QR(상하이 Metro) 활성화</span></label>
+      <label><input type="checkbox" id="c-travellog"><span>트래블로그 카드 발급 + 위안 충전</span></label>
+      <label><input type="checkbox" id="c-wechat"><span>위챗 가입</span></label>
+      <label><input type="checkbox" id="c-esim"><span>eSIM/유심 구매 (홍콩 경유, 카톡 가능)</span></label>
+      <label><input type="checkbox" id="c-cash"><span>현금 1인 ¥200~300</span></label>
+    </fieldset>
+    <fieldset><legend>앱</legend>
+      <label><input type="checkbox" id="c-amap"><span>바이두 지도 (百度地图, 한국 앱스토어에 있음)</span></label>
+      <label><input type="checkbox" id="c-dianping"><span>다중뎬핑 (맛집·원격 줄서기)</span></label>
+      <label><input type="checkbox" id="c-disneyapp"><span>상하이 디즈니 공식 앱 + 티켓 연결</span></label>
+      <label><input type="checkbox" id="c-papago"><span>파파고 (중국어 오프라인 번역 다운로드)</span></label>
+    </fieldset>
+    <fieldset><legend>짐</legend>
+      <label><input type="checkbox" id="c-battery"><span>보조배터리 (3C 인증·용량 표기, 1인 2개까지, 기내만)</span></label>
+      <label><input type="checkbox" id="c-adapter"><span>멀티 어댑터 (A/I형)</span></label>
+      <label><input type="checkbox" id="c-shower"><span>샤워필터</span></label>
+      <label><input type="checkbox" id="c-tissue"><span>휴대용 휴지 · 물티슈</span></label>
+      <label><input type="checkbox" id="c-umbrella"><span>접이식 우산</span></label>
+      <label><input type="checkbox" id="c-jacket"><span>얇은 겉옷 (밤 강바람)</span></label>
+      <label><input type="checkbox" id="c-shoes"><span>편한 운동화</span></label>
+      <label><input type="checkbox" id="c-meds"><span>상비약 (소화제·진통제·밴드)</span></label>
+      <label><input type="checkbox" id="c-ecobag"><span>접이식 에코백 (기념품용)</span></label>
+    </fieldset>
+  </form>
+
+  <div class="card">
+    <h3>10월 중순 날씨</h3>
+    <div class="wx num" style="margin-top:10px">
+      <div><b>23°</b><span>평균 최고</span></div><div><b>16°</b><span>평균 최저</span></div>
+      <div><b>8일</b><span>10월 비 온 날</span></div><div><b>17:25</b><span>일몰 무렵</span></div>
+    </div>
+    <p class="small" style="margin-top:10px">낮엔 긴팔 한 장, 밤 강바람엔 얇은 바람막이나 가디건. 접이식 우산 하나씩. 디즈니 날은 2만 보 넘게 걸어요.</p>
+    <p class="src" style="margin-top:6px"><a href="https://travelweatherfairy.com/shanghai/october/" target="_blank" rel="noopener">여행날씨요정 10월 평년값</a> · 출발 3일 전 실제 예보 확인</p>
+  </div>
+</section>
+
+<!-- ================= 교통·돈 ================= -->
+<section class="view" id="v-move" hidden>
+  <div class="sec-head"><span class="eyebrow">TAXI CARDS</span><h2>기사님께 보여줄 주소</h2><p class="lead">화면을 그대로 보여주면 돼요. 디디는 알리페이 안에서 부르면 목적지가 이미 전달돼요.</p></div>
+  <div class="grid2">
+    <div class="card taxi">
+      <div class="row"><strong>숙소① 10/15–16</strong><button class="copy" data-copy="上海市黄浦区西藏中路90号 远东饭店">복사</button></div>
+      <p class="zhaddr">远东饭店<br>上海市黄浦区西藏中路90号</p>
+      <p class="small muted">위안둥 판뎬(원동호텔) · 상하이시 황푸구 시짱중루 90번지 · 오파트먼트 더 파 이스턴 · 1·2·8호선 인민광장역 도보 3분</p>
+    </div>
+    <div class="card taxi">
+      <div class="row"><strong>숙소② 10/16–18</strong><button class="copy" data-copy="上海市浦东新区浦东南路2266号3号楼 上海陆家嘴世博中心逸扉酒店">복사</button></div>
+      <p class="zhaddr">上海陆家嘴世博中心逸扉酒店<br>浦东新区浦东南路2266号3号楼</p>
+      <p class="small muted">상하이 루자쭈이 스보중신 이페이 주뎬(유어코브 by 하얏트) · 푸둥신구 푸둥난루 2266번지 3동 · 4호선 탕차오(塘桥)역 도보 8~10분</p>
+    </div>
+    <div class="card taxi">
+      <div class="row"><strong>디즈니 (내리는 곳)</strong><button class="copy" data-copy="上海迪士尼度假区 西公共交通枢纽">복사</button></div>
+      <p class="zhaddr">上海迪士尼度假区<br>西公共交通枢纽</p>
+      <p class="small muted">상하이 디스니 두자취 시 궁궁자오퉁수뉴 · 디즈니 리조트 서쪽 대중교통 허브 (택시가 내려주는 공식 장소)</p>
+    </div>
+    <div class="card taxi">
+      <div class="row"><strong>ERA 서커스 (10/16)</strong><button class="copy" data-copy="上海马戏城 静安区共和新路2266号">복사</button></div>
+      <p class="zhaddr">上海马戏城<br>静安区共和新路2266号</p>
+      <p class="small muted">상하이 마시청(상하이 서커스 월드) · 징안구 궁허신루 2266번지 · 1호선 마시청역 3번 출구</p>
+    </div>
+    <div class="card taxi">
+      <div class="row"><strong>푸동공항</strong><button class="copy" data-copy="浦东国际机场">복사</button></div>
+      <p class="zhaddr">浦东国际机场</p>
+      <p class="small muted">푸둥 궈지 지창 · 푸동국제공항. 터미널은 항공권에서 확인 후 "1号航站楼(1터미널)"/"2号航站楼(2터미널)" 덧붙이기</p>
+    </div>
+  </div>
+
+  <div class="sec-head"><span class="eyebrow">GETTING AROUND</span><h2>교통</h2></div>
+  <div class="tbl"><table>
+    <thead><tr><th>수단</th><th>요금</th><th>타는 법</th></tr></thead>
+    <tbody>
+      <tr><td><strong>자기부상열차</strong> <x-zh r="츠쉬안푸" m="자기부상">磁悬浮</x-zh></td><td class="num">¥50 · 당일 항공권 제시 ¥40</td><td>06:45~21:40, 약 20분 간격, <x-zh r="룽양루" m="환승역">龙阳路</x-zh>까지 8분. 해외 컨택리스 카드 태그 가능.</td></tr>
+      <tr><td><strong>지하철</strong> <x-zh r="디톄" m="지하철">地铁</x-zh></td><td class="num">¥3~9</td><td>알리페이 → <x-zh r="추싱" m="교통">出行</x-zh> → 교통카드 → 상하이 Metro QR. 또는 비자·마스터 컨택리스 카드 개찰구 태그(2025.6~).</td></tr>
+      <tr><td><strong>디디</strong> <x-zh r="디디" m="택시 호출">滴滴</x-zh></td><td class="num">시내 ¥15~40</td><td>알리페이 안 DiDi. 번호판 확인 후 탑승, 결제 자동.</td></tr>
+      <tr><td><strong>페리</strong> <x-zh r="룬두" m="강 건너는 배">轮渡</x-zh></td><td class="num">¥2</td><td><x-zh r="둥창루" m="푸동 쪽">东昌路</x-zh> ↔ <x-zh r="진링둥루" m="와이탄 쪽">金陵东路</x-zh>. 교통 QR로 탑승.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="src"><a href="https://english.shanghai.gov.cn/en-Latest-WhatsNew/20250627/d8f21f2e7d3b45a5b03757e35039b806.html" target="_blank" rel="noopener">상하이시 정부</a> · <a href="https://kr.trip.com/guide/info/alipay-transit-card.html" target="_blank" rel="noopener">트립닷컴 알리페이 교통카드</a> · <a href="https://kr.trip.com/moments/theme/poi-shanghai-maglev-train-80719-guides-993135/" target="_blank" rel="noopener">자기부상열차</a></p>
+
+  <div class="sec-head"><span class="eyebrow">APPS</span><h2>필수 앱</h2></div>
+  <div class="tbl"><table>
+    <thead><tr><th>앱</th><th>쓰는 곳</th></tr></thead>
+    <tbody>
+      <tr><td><strong>알리페이</strong></td><td>결제 거의 전부, 지하철 QR, 디디 택시</td></tr>
+      <tr><td><strong>위챗</strong></td><td>식당 QR 주문, 디즈니 혼잡도 <x-zh r="선치 덩허우 스젠" m="신기한 대기시간">神奇等候时间</x-zh> 검색</td></tr>
+      <tr><td><strong><x-zh r="바이두 디투" m="바이두 지도">百度地图</x-zh></strong></td><td>구글맵 대신. 한국 앱스토어 "百度地图". 지하철 경로·도보 안내</td></tr>
+      <tr><td><strong><x-zh r="다중뎬핑" m="맛집 앱">大众点评</x-zh></strong></td><td>평점, 메뉴 사진, 원격 줄서기 <x-zh r="파이하오" m="번호표">排号</x-zh>, 쿠폰</td></tr>
+      <tr><td><strong>상하이 디즈니 앱</strong></td><td>대기시간, 공연 시간, Premier Access 구매</td></tr>
+      <tr><td><strong>파파고</strong></td><td>메뉴판 사진 번역, 대화 번역</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="sec-head"><span class="eyebrow">MONEY</span><h2>카드 · 결제</h2></div>
+  <div class="grid2">
+    <div class="card"><strong>메인: 하나 트래블로그 (유니온페이)</strong><p class="small">위안 무료 환전, 해외 결제·ATM 수수료 면제. 알리페이에서 200위안 넘는 결제에 붙는 3% 수수료가 프로모션으로 면제(2026년 연말까지라는 보도, 약관 확인).</p><p class="src"><a href="https://m.news.nate.com/view/20260827n27391" target="_blank" rel="noopener">네이트뉴스 2026-08-27</a></p></div>
+    <div class="card"><strong>보조: 토스뱅크 · 트래블월렛</strong><p class="small">알리페이는 건당 200위안 이하면 수수료 없음. 큰 결제는 트래블로그로.</p><p class="src"><a href="https://kr.trip.com/guide/info/alipay-fees.html" target="_blank" rel="noopener">트립닷컴 알리페이 수수료</a></p></div>
+    <div class="card"><strong>한국 페이도 돼요</strong><p class="small">카카오페이·네이버페이·토스페이 해외결제 → 중국 선택 → QR 제시. 알리페이 오류 때 대안.</p></div>
+    <div class="card"><strong>현금</strong><p class="small">1인 ¥200~300. 거의 안 쓰지만 QR 오류 대비.</p></div>
+  </div>
+
+  <div class="sec-head"><span class="eyebrow">DATA</span><h2>인터넷 (카톡·인스타 되는 것)</h2></div>
+  <p class="small">중국 현지 유심·와이파이로는 카톡·구글·인스타가 막혀요. "홍콩 경유" 또는 "VPN 없이 카톡 가능" 상품으로.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>상품</th><th>가격</th><th>메모</th><th>확인</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://shop.maaltalk.com/local/china.html" target="_blank" rel="noopener">말톡 중국 eSIM</a></td><td class="num">일 $3.11~ · 매일 3GB $4.98~</td><td>구글·유튜브 VPN 없이 가능</td><td class="ok">판매 중</td></tr>
+      <tr><td><a href="https://experiences.myrealtrip.com/products/3860239" target="_blank" rel="noopener">마이리얼트립 공항수령 유심</a></td><td class="num">4일 8,000원~</td><td>인천공항 수령, 구글·카톡 가능</td><td class="ok">판매 중</td></tr>
+      <tr><td>SKT 바로 로밍 3GB</td><td class="num">29,000원</td><td>설정 없이 가장 편함</td><td class="muted">통신사 앱</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="sec-head"><span class="eyebrow">HEADS UP</span><h2>꼭 알아둘 것</h2></div>
+  <ul class="list">
+    <li><strong>보조배터리(대한항공)</strong>: 1인 최대 2개, 위탁 금지, 기내 사용·충전 금지(2026.1~). 푸동 출국 검색에서 용량 표기가 흐린 배터리 압수 후기 있음. <span class="src">(<a href="https://www.koreanair.com/contents/footer/customer-support/notice/2026/260410-powerbanks-guide" target="_blank" rel="noopener">대한항공 공지</a>)</span></li>
+    <li><strong>육가공품</strong>: 육포·소시지는 중국 반입 금지, 한국 반입도 과태료.</li>
+    <li><strong>찻집 사기</strong>: 난징동루·와이탄에서 "사진 찍어 달라, 차 마시러 가자"는 사람은 피하기.</li>
+    <li><strong>수돗물</strong>: 마시지 말고 생수로.</li>
+    <li><strong>시차</strong>: 한국보다 1시간 느려요.</li>
+    <li><strong>세관</strong>: 현금 ¥20,000 또는 US$5,000 초과 시 신고.</li>
+  </ul>
+</section>
+
+<!-- ================= 쇼핑·맛집 ================= -->
+<section class="view" id="v-shop" hidden>
+  <div class="sec-head"><span class="eyebrow">BUY BEFORE</span><h2>한국에서 미리 살 것</h2><p class="lead">9/30 쿠팡에서 판매 중인 걸 직접 확인한 링크예요. 가격은 바뀔 수 있어요.</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>물건</th><th>추천 상품</th><th>가격</th><th>왜</th></tr></thead>
+    <tbody>
+      <tr><td><strong>보조배터리</strong></td><td><a href="https://www.coupang.com/vp/products/9388290015" target="_blank" rel="noopener">스토리링크 10000 미니 (3C CCC)</a><br><a href="https://www.coupang.com/vp/products/9523230902" target="_blank" rel="noopener">샤오미 포켓에디션 10000 (CCC)</a></td><td class="num">27,400원<br>25,800원</td><td>3C 마크 + mAh·Wh 인쇄 제품이 안전</td></tr>
+      <tr><td><strong>멀티 어댑터</strong></td><td><a href="https://www.coupang.com/vp/products/8376957850" target="_blank" rel="noopener">오지렌 미니 GaN 멀티 어댑터</a><br><a href="https://www.coupang.com/vp/products/9015573975" target="_blank" rel="noopener">플라이토 USB 2포트</a></td><td class="num">16,900원<br>7,500원</td><td>중국 콘센트는 A형·I형</td></tr>
+      <tr><td><strong>샤워필터</strong></td><td><a href="https://www.coupang.com/vp/products/7432652127" target="_blank" rel="noopener">듀벨 여행용 샤워기 + 필터 6p</a><br><a href="https://www.coupang.com/vp/products/9686683720" target="_blank" rel="noopener">퓨어프로젝트 샤워헤드 세트</a></td><td class="num">27,900원<br>8,800원</td><td>석회 많은 수돗물 대비</td></tr>
+      <tr><td>휴지·물티슈</td><td>소포장 아무거나</td><td></td><td>공중화장실에 휴지 없는 곳 많음</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="sec-head"><span class="eyebrow">MUST BUY</span><h2>상하이에서 이건 사라</h2></div>
+  <div class="grid2">
+    <div class="card"><strong><x-zh r="후뎨쑤" m="나비파이">蝴蝶酥</x-zh></strong><p class="small"><x-zh r="궈지판뎬" m="국제호텔">国际饭店</x-zh> 1층 베이커리(황허루). 상하이 사람들이 줄 서는 버터 파이. 오픈 직후나 저녁에, 문 앞 되팔이 피하기. ¥35~128.</p></div>
+    <div class="card"><strong><x-zh r="다바이투" m="흰 토끼 밀크캔디">大白兔</x-zh></strong><p class="small">난징동루 <x-zh r="디이 스핀 상뎬" m="제일식품점">第一食品商店</x-zh>(720번지)에 한정 패키지가 많아요. ¥10~88.</p></div>
+    <div class="card"><strong><x-zh r="셴러우웨빙" m="고기 월병">鲜肉月饼</x-zh></strong><p class="small">10월은 월병 시즌. <x-zh r="라오다팡" m="100년 과자점">老大房</x-zh>에서 갓 구운 걸 사서 바로. 개당 ¥5~8.</p></div>
+    <div class="card"><strong>중국 차 <x-zh r="룽징" m="용정 녹차">龙井</x-zh> · <x-zh r="모리화차" m="재스민차">茉莉花茶</x-zh></strong><p class="small">예원이나 제일식품점 차 매장에서. 호객하는 찻집은 피하기.</p></div>
+    <div class="card"><strong>디즈니 한정 굿즈</strong><p class="small">10주년·핼러윈·주토피아 굿즈는 상하이에만 있는 게 많아요. 퇴장 직전에.</p></div>
+    <div class="card"><strong>레트로 뷰티 <x-zh r="바이췌링" m="100년 화장품">百雀羚</x-zh> · <x-zh r="쉐화가오" m="눈꽃 크림">雪花膏</x-zh></strong><p class="small">레트로 틴 케이스라 선물용으로 좋아요. ¥15~69.</p></div>
+  </div>
+  <p class="src"><a href="https://www.eastchinatrip.com/ko/shanghai-souvenirs-travel-guide/" target="_blank" rel="noopener">eastchinatrip 2026</a> · <a href="https://www.tripstore.kr/blog/shanghai-shopping-list" target="_blank" rel="noopener">트립스토어 2026</a></p>
+
+  <div class="sec-head"><span class="eyebrow">FOOD BANK</span><h2>맛집 뱅크</h2><p class="lead">줄이 너무 길거나 일정이 바뀔 때 근처에서 골라요. 바이두·다중뎬핑에 중국어 이름으로 검색.</p></div>
+  <div class="grid2">
+    <details class="fold" open><summary>인민광장 · 난징동루</summary><div class="inner small">
+      <p><strong><x-zh r="지아지아탕바오" m="게살 탕바오집">佳家汤包</x-zh></strong> 게살 탕바오 성지. 오전·오후 3시쯤이 한가.</p>
+      <p><strong><x-zh r="궈차오미셴" m="윈난식 쌀국수">过桥米线</x-zh></strong> 上汤·云南过桥米线(人民广场店) 九江路686号. 10:00~21:00.</p>
+      <p><strong><x-zh r="춘빙" m="얇은 밀전병 쌈">春饼</x-zh></strong> 饼中王은 다롄 체인이라 상하이엔 없어요. 상하이 춘빙 전문점은 양푸구(국정로)라 동선 밖.</p>
+      <p><strong><x-zh r="샤오양성젠" m="샤오양 군만두">小杨生煎</x-zh></strong> 바닥 바삭한 군만두. 4개 ¥10~16.</p>
+      <p><strong><x-zh r="헌주이첸 양러우촨" m="아주 먼 옛날 양꼬치">很久以前羊肉串</x-zh></strong> 직원이 구워 주는 양꼬치. 제일백화점 6층.</p>
+      <p><strong><x-zh r="훙쿠이자 샤오룽샤" m="붉은 갑옷 가재집">红盔甲·小龙虾</x-zh></strong> 껍질 까 주는 마라·마늘 가재. 대세계역. 원격 줄서기 필수.</p>
+      <p><strong><x-zh r="하이디라오" m="서비스 훠궈">海底捞</x-zh></strong> 베이징시루점, 새벽까지.</p>
+    </div></details>
+    <details class="fold"><summary>신천지 · 프랑스조계지</summary><div class="inner small">
+      <p><strong><x-zh r="예상하이" m="밤의 상하이">夜上海</x-zh></strong> 미슐랭 선정 본방요리.</p>
+      <p><strong>Polux</strong> 미슐랭 빕구르망 프렌치 비스트로. 프렌치토스트·어니언수프.</p>
+      <p><strong><x-zh r="라오지스" m="상하이 가정식">老吉士</x-zh></strong> <x-zh r="훙사오러우" m="간장 삼겹살조림">红烧肉</x-zh>의 교과서. 예약 필수.</p>
+      <p><strong><x-zh r="쭤팅유위안" m="차오산식 소고기 훠궈">左庭右院</x-zh></strong> 한국인 후기 많은 소고기 훠궈.</p>
+      <p><strong><x-zh r="룽자이" m="프라다가 복원한 저택">荣宅</x-zh> 카페</strong> 미샹 프라다 롱자이.</p>
+    </div></details>
+    <details class="fold"><summary>와이탄 · 예원</summary><div class="inner small">
+      <p><strong><x-zh r="난샹 만터우뎬" m="난샹 만두집">南翔馒头店</x-zh></strong> 예원 안 샤오롱바오 원조. 1층 포장, 2~3층 좌석.</p>
+      <p><strong><x-zh r="후궁관" m="상하이 요리집">沪公馆</x-zh></strong> 와이탄 뷰. <x-zh r="쑹수구이위" m="쏘가리 탕수">松鼠桂鱼</x-zh>.</p>
+      <p><strong><x-zh r="리바이셰" m="게 요리집">李白蟹</x-zh></strong> 게알 비빔면 <x-zh r="셰황몐" m="게알 국수">蟹黄面</x-zh>. 10월 제철.</p>
+      <p><strong>CONDÉ</strong> 북와이탄 리젠트 호텔 5층 테라스 바. 17:30~24:00.</p>
+      <p><strong>Roosevelt Sky Bar</strong> 외탄 27호 루프탑, 해피아워.</p>
+    </div></details>
+    <details class="fold"><summary>루자쭈이 (푸동)</summary><div class="inner small">
+      <p><strong><x-zh r="뎬두더" m="광둥 딤섬 체인">点都德</x-zh></strong> <x-zh r="정다광창" m="슈퍼브랜드몰">正大广场</x-zh>점. <x-zh r="샤자오" m="새우만두">虾饺</x-zh>, <x-zh r="훙미창" m="바삭 창펀">红米肠</x-zh>, <x-zh r="보뤄바오" m="파인애플빵">菠萝包</x-zh>.</p>
+      <p><strong>Flair</strong> 리츠칼튼 58층 루프탑.</p>
+    </div></details>
+  </div>
+</section>
+
+<footer>
+  <p>2026-09-30 기준으로 공식 사이트·쿠팡·클룩·마이리얼트립 페이지와 한국 블로그·인스타그램(@1amny 노션 가이드북, @sse_luv, @tour.toctoc, @everymoment_writer)을 교차 확인해 정리했어요.</p>
+  <p>지도는 실제 좌표를 기준으로 그린 약도예요. 길 찾기는 바이두에서.</p>
+</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- 유틸 ---------- */
+// 〔中文|읽는법|뜻〕 → <x-zh>
+function T(s){ if(!s) return ""; return String(s).replace(/〔([^|〕]+)\|([^|〕]+)(?:\|([^〕]+))?〕/g,function(_,z,r,m){return '<x-zh r="'+r+'"'+(m?' m="'+m+'"':'')+'>'+z+'</x-zh>';}); }
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+
+/* ---------- 장소 (위도, 경도) ---------- */
+var P={
+ h1:{n:"원동호텔(숙소①)",zh:"〔远东饭店|위안둥판뎬|원동호텔〕",ll:[31.2322,121.4768],hotel:1},
+ h2:{n:"유어코브(숙소②)",zh:"〔逸扉酒店|이페이주뎬|유어코브 호텔〕",ll:[31.2096,121.5200],hotel:1},
+ pvg:{n:"푸동공항",zh:"〔浦东国际机场|푸둥궈지지창|푸동국제공항〕",ll:[31.1440,121.8050],far:1},
+ disney:{n:"디즈니랜드",zh:"〔上海迪士尼乐园|상하이 디스니러위안|상하이 디즈니랜드〕",ll:[31.1440,121.6570],far:1},
+ mixian:{n:"미셴",zh:"〔上汤·云南小馆(人民广场店)|상탕 윈난샤오관|상탕 윈난 식당〕",ll:[31.2350,121.4780]},
+ imjung:{n:"임시정부",zh:"〔大韩民国临时政府旧址|다한민궈 린스정푸 주즈|대한민국 임시정부 옛터〕",ll:[31.2196,121.4735]},
+ prada:{n:"프라다 룽자이",zh:"〔迷上Prada荣宅|미상 프라다 룽자이|프라다에 반하다·룽씨 저택〕",ll:[31.2290,121.4560]},
+ hoxa:{n:"hoxa bistro",zh:"〔现代新疆小酒馆|셴다이 신장 샤오주관|모던 신장 비스트로〕",ll:[31.2423,121.4880]},
+ bund:{n:"와이탄",zh:"〔外滩|와이탄|강변 둑길〕",ll:[31.2395,121.4905]},
+ flair:{n:"Flair 루프탑",zh:"〔浦东丽思卡尔顿|푸둥 리쓰카얼둔|리츠칼튼 푸동〕",ll:[31.2365,121.5012]},
+ cruise:{n:"유람선 부두",zh:"〔十六铺码头|스류푸 마터우|16포 부두〕",ll:[31.2291,121.4967]},
+ mcd:{n:"맥도날드",zh:"〔麦当劳(黄浦悦荟广场店)|마이당라오 웨후이광창뎬|맥도날드 열회광장점〕",ll:[31.2373,121.4857]},
+ yonghe:{n:"永和大王 아침",zh:"〔永和大王(仁济医院店)|융허다왕 런지이위안뎬|영화대왕 인제병원점〕",ll:[31.2082,121.5216]},
+ roof:{n:"ROOF 루프탑",zh:"〔上海艾迪逊酒店·ROOF|상하이 아이디쉰 주뎬|에디션 호텔 루프탑〕",ll:[31.2402,121.4868]},
+ njdl:{n:"난징동루",zh:"〔南京东路步行街|난징둥루 부싱제|난징동로 보행가〕",ll:[31.2358,121.4812]},
+ wukang:{n:"우캉맨션",zh:"〔武康大楼|우캉다러우|우캉 맨션〕",ll:[31.2047,121.4378]},
+ iccf:{n:"ICCF 가든",zh:"〔之禾卡纷花园|즈허 카펀 화위안|ICICLE·CARVEN 정원〕",ll:[31.2108,121.4492]},
+ dongliang:{n:"메종 둥량",zh:"〔栋梁之家|둥량 즈자|대들보의 집〕",ll:[31.2205,121.4290]},
+ dimdim:{n:"점도덕",zh:"〔点都德(中海环宇荟店)|뎬두더 중하이환위후이뎬|뭘 시켜도 좋은 딤섬집〕",ll:[31.2172,121.4722]},
+ trees:{n:"1000 Trees",zh:"〔天安千树|톈안 첸수|천 그루 나무〕",ll:[31.2490,121.4470]},
+ malatang:{n:"류원샹 마라탕",zh:"〔刘文祥麻辣烫(长寿店)|류원샹 마라탕 창서우뎬|류원샹 마라탕 장수점〕",ll:[31.2425,121.4432]},
+ circus:{n:"ERA 서커스",zh:"〔上海马戏城|상하이 마시청|상하이 서커스 월드〕",ll:[31.2780,121.4514]},
+ hjyq:{n:"헌지우이치엔",zh:"〔很久以前羊肉串|헌주이첸 양러우촨|아주 먼 옛날 양꼬치〕",ll:[31.2357,121.4762]},
+ haidilao:{n:"하이디라오",zh:"〔海底捞火锅(巴黎春天浦建店)|하이디라오 바리춘톈 푸젠뎬|하이디라오 파리의봄 푸젠점〕",ll:[31.2078,121.5202]},
+ jianbing:{n:"젠빙",zh:"〔卷王煎饼(上海首店)|쥐안왕 젠빙|젠빙 왕〕",ll:[31.2345,121.4790]}
+};
+/* 구글맵 검색어 (구글 지도에서 실제로 찾아지는 이름·주소) */
+var G={flair:"The Ritz-Carlton Shanghai, Pudong",cruise:"Shiliupu Tourism Wharf Area 1, Shanghai",mcd:"McDonald's 353 Nanjing Rd East, Shanghai",yonghe:"Yonghe King Renji Hospital Branch, 160 Pujian Rd, Shanghai",h1:"OPARTMENT The Far Eastern Hotel, 90 Xizang Middle Road, Shanghai",h2:"UrCove by HYATT Shanghai Lujiazui Expo",pvg:"Shanghai Pudong International Airport",disney:"Shanghai Disneyland Park",
+ mixian:"686 Jiujiang Rd, Huangpu, Shanghai",imjung:"大韩民国临时政府旧址",prada:"荣氏老宅 186 Shanxi Rd (N), Shanghai",hoxa:"ZHotel The Somekh Building, 190 Beijing Rd East, Shanghai",
+ bund:"The Bund, Shanghai",roof:"The Shanghai EDITION",njdl:"Nanjing Road Pedestrian Street, Shanghai",jianbing:"476 Guangxi Rd (N), Huangpu, Shanghai",
+ wukang:"Wukang Mansion, Shanghai",iccf:"2-2 Hengshan Rd, Xuhui District, Shanghai",dongliang:"174 Wuyi Rd, Changning District, Shanghai",
+ dimdim:"China Overseas Int'l. Ctr. Bldg. A, 838 Huangpi Rd (S), Shanghai",trees:"Tian'an Sunshine Plaza, Moganshan Rd, Shanghai",malatang:"Yaxin Life Square, 401 Changshou Rd, Shanghai",
+ circus:"Shanghai Circus World",hjyq:"Shanghai No.1 Department Store, 830 Nanjing Rd, Shanghai",haidilao:"海底捞 118 Pujian Rd, Shanghai"};
+function gmPlaceEsc(u){return u.replace(/&/g,"&amp;").replace(/"/g,"&quot;");}
+/* 바이두 지도 검색어: 바이두 기준 중국어 가게 이름 */
+var A={flair:"上海浦东丽思卡尔顿酒店",cruise:"十六铺码头",mcd:"麦当劳(黄浦悦荟广场店)",yonghe:"永和大王(仁济医院店)",h1:"远东饭店",h2:"上海陆家嘴世博中心逸扉酒店",pvg:"浦东国际机场",disney:"上海迪士尼乐园",
+ mixian:"上汤·云南小馆(人民广场店)",imjung:"大韩民国临时政府旧址",prada:"迷上Prada荣宅",hoxa:"hoxa bistro现代新疆小酒馆(外滩沙美店)",
+ bund:"外滩",roof:"上海艾迪逊酒店",njdl:"南京东路步行街",jianbing:"卷王煎饼(上海首店)",wukang:"武康大楼",iccf:"之禾卡纷花园",
+ dongliang:"棟梁之家MAISON DONGLIANG",dimdim:"点都德(中海环宇荟店)",trees:"天安千树",malatang:"刘文祥麻辣烫(长寿店)",circus:"上海马戏城",
+ hjyq:"很久以前羊肉串(南京路第一百货店)",haidilao:"海底捞火锅(巴黎春天浦建店)"};
+var C={flair:[31.236545,121.501247],cruise:[31.229051,121.496653],mcd:[31.2373,121.4857],yonghe:[31.20816,121.52164],h1:[31.230024,121.47783],h2:[31.209593,121.520004],pvg:[31.144344,121.808273],disney:[31.143397,121.657871],
+ mixian:[31.23454,121.47767],imjung:[31.217248,121.474698],prada:[31.226755,121.455704],hoxa:[31.2408,121.48644],bund:[31.2395,121.4907],
+ roof:[31.237886,121.485916],njdl:[31.234721,121.474898],jianbing:[31.23701,121.47663],wukang:[31.20448,121.438326],iccf:[31.20899,121.44959],
+ dongliang:[31.2213,121.4302],dimdim:[31.21122,121.47688],trees:[31.249354,121.447244],malatang:[31.239631,121.437175],circus:[31.278,121.4514],
+ hjyq:[31.23488,121.474773],haidilao:[31.207796,121.520209]};
+function cq(s){return s&&(s.c||(s.p&&C[s.p]))||null;}
+function amapDir(a,an,b,bn,mv){var m=/호선|지하철/.test(mv)?"transit":(/도보/.test(mv)&&!/디디|택시|페리/.test(mv)?"walking":"driving");
+ return "https://api.map.baidu.com/direction?origin="+encodeURIComponent("latlng:"+a[0]+","+a[1]+"|name:"+an)+"&destination="+encodeURIComponent("latlng:"+b[0]+","+b[1]+"|name:"+bn)+"&mode="+m+"&region="+encodeURIComponent("上海")+"&coord_type=gcj02"+BSRC;}
+function aq(s){return s&&(s.a||(s.p&&A[s.p]))||"";}
+var BSRC="&output=html&src=webapp.claude.shanghaibook";
+function amap(q){return "https://api.map.baidu.com/place/search?query="+encodeURIComponent(q)+"&region="+encodeURIComponent("上海")+BSRC;}
+function gq(s){return s&&(s.g||(s.p&&G[s.p]))||"";}
+function gmPlace(q){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);}
+function gmDir(a,b,mv){var m=/호선|지하철/.test(mv)?"transit":(/도보/.test(mv)&&!/디디|택시|페리/.test(mv)?"walking":"driving");return "https://www.google.com/maps/dir/?api=1&origin="+encodeURIComponent(a)+"&destination="+encodeURIComponent(b)+"&travelmode="+m;}
+var LANDMARK=[["인민광장",[31.2317,121.4726]],["루자쭈이",[31.2390,121.5030]],["와이탄",[31.2400,121.4915]],["신천지",[31.2212,121.4757]]];
+var RIVER=[[31.170,121.462],[31.185,121.476],[31.197,121.486],[31.207,121.493],[31.216,121.498],[31.225,121.499],[31.233,121.497],[31.240,121.495],[31.246,121.497],[31.2495,121.503],[31.249,121.512],[31.245,121.522],[31.243,121.532],[31.250,121.545],[31.262,121.552],[31.280,121.556]];
+var CREEK=[[31.2448,121.4960],[31.2452,121.4870],[31.2462,121.4760],[31.2445,121.4660],[31.2455,121.4550],[31.2480,121.4440],[31.2475,121.4300],[31.2400,121.4150]];
+
+/* ---------- 확정 일정 ---------- */
+var D1=[
+ {t:"12:25",p:"pvg",k:"도착",name:"푸동공항 도착 → 디디로 숙소",
+  tip:["입국심사 때 전자입국신고 QR 보여주기. 보통 40분~1시간.","알리페이 → DiDi에서 목적지 〔远东饭店|위안둥판뎬|원동호텔〕(西藏中路90号) 입력. 공항 안 표지판 〔网约车上车点|왕웨처 상처뎬|호출차 타는 곳〕 따라가서 탑승.","약 45~60분 · ¥150~200. 캐리어가 크면 차종을 Comfort나 〔六座|류쭤|6인승〕으로."]},
+ {t:"14:00",p:"h1",k:"숙소",mv:"디디 45~60분 · ¥150~200",name:"원동호텔(숙소①) 얼리 체크인 · 짐 풀기",
+  tip:["얼리 체크인이 된다고 보고 짠 일정이에요. 안 되면 짐만 맡기고(〔寄存行李|지춘싱리|짐 보관〕) 바로 점심.","15~20분만 쉬고 나가요."]},
+ {t:"14:25",p:"mixian",k:"점심",mv:"원동호텔(숙소①)에서 도보 5분",hook:"뜨거운 닭 육수에 생재료를 차례로 넣어 익혀 먹는 윈난식 쌀국수",name:"상탕 윈난샤오관 · 과교미선",
+  fam:["〔过桥米线|궈차오미셴|다리 건너는 쌀국수〕 대표 메뉴","〔卤烤|루카오|조림 구이〕 곁들임","바이두 평점 4.4 · 1인 약 ¥66"],
+  tip:["고기·메추리알 같은 생재료 → 채소 → 면 순서로 넣어요. 국물이 아주 뜨거우니 조심.","프라다 16:00 예약이 있어서 15:00엔 일어나요."],
+  meta:"〔上汤·云南小馆(人民广场店)|상탕 윈난샤오관 런민광창뎬|상탕 윈난 식당〕 黄浦区 九江路660-686号 1F 102B · 매일 09:30~22:00 · ☎ 187 0199 5858"},
+ {t:"15:05",p:null,g:"Lillian Cake Shop, New World City, Nanjing Rd (W), Shanghai",c:[31.234904,121.473647],a:"莉蓮蛋挞(人民广场店)",k:"간식",opt:1,mv:"도보 5분 (인민광장 쪽, 디디 타러 가는 길)",
+  hook:"지하철역에서 바로 집어 드는 상하이식 에그타르트",name:"릴리안 에그타르트 (선택)",
+  fam:["〔莉莲蛋挞|리롄단타|릴리안 에그타르트〕 오리지널·치즈타르트 개당 ¥7~9"],
+  tip:["점심 직후라 1개만 사서 나눠 먹기. 줄이 길거나 시간이 빠듯하면 패스.","바로 앞 큰길에서 디디 호출 → 임시정부."],
+  meta:"인민광장역 환승홀 1-118호(06:30~21:30) 또는 바로 옆 新世界城 B1 매장"},
+ {t:"15:20",p:"imjung",k:"명소",mv:"디디 10분 · ¥15",hook:"골목 안 3층 벽돌집, 우리 역사가 버텨낸 7년",name:"대한민국 임시정부 청사",
+  fam:["1926~1932년 김구 선생이 집무하던 청사. 회의실·집무실·숙소 복원"],
+  tip:["작은 건물이라 25분이면 충분해요. <b>프라다 16:00 예약</b> 때문에 15:45엔 나와요.","내부 촬영 제한 구간 있음. 입장 마감 16:30."],
+  meta:"黄浦区 马当路306弄4号 · 09:00~11:30, 13:30~17:00 · ¥20 · 여권 지참"},
+ {t:"16:00",p:"prada",k:"카페",mv:"디디 12분 · ¥20 (15:45 출발)",resv:1,hook:"왕가위 영화 세트 같은 1918년 저택에서 프라다 디저트",name:"미상 프라다 룽자이 (16:00 예약)",
+  fam:["이탈리아 페이스트리: 티라미수, 카사타, 레몬 딜라이트, 백조 슈","애프터눈티 1인 ¥488","스테인드글라스와 모자이크 바닥이 남은 저택 〔荣宅|룽자이|룽씨 저택〕"],
+  tip:["<b>16:00 예약</b>이라 5분 전 도착.","1층 저택 전시도 같이 둘러보기. 1시간 정도."],
+  meta:"静安区 陕西北路186号 荣宅 2F · 매일 10:00~22:00 · ☎ +86 21 2218 0388"},
+ {t:"17:30",p:"hoxa",k:"저녁",mv:"디디 15분 · ¥25 (17:10 출발)",resv:1,hook:"동방명주를 정면으로 보는 테라스에서 먹는 신장 요리",name:"hoxa bistro",
+  fam:["〔沙湾铜锅大盘鸡|사완 퉁궈 다판지|구리솥 닭감자볶음〕","〔手抓饭|서우좌판|양고기 볶음밥〕 양갈비 얹은 것","〔包尔萨克|바오얼사커|신장식 튀김빵〕, 양꼬치, 서역 밀크티","1인 평균 약 ¥118~142"],
+  tip:["해 지는 17:25 직후 도착 → 테라스에서 동방명주 불 켜지는 것 보기.","테라스 자리는 전화 예약. 2층 테라스 포토존은 식사 안 해도 사진 가능."],
+  meta:"黄浦区 北京东路194号 沙美大楼 2F · 11:00~16:30 / 17:00~22:30 · ☎ 189 3093 9307"},
+ {t:"19:00",p:"mcd",k:"간식",mv:"도보 5분",hook:"한국엔 없는 중국 맥도날드 타로파이",name:"맥도날드 파이",
+  fam:["〔香芋派|샹위파이|타로파이〕, 〔菠萝派|보뤄파이|파인애플파이〕 ¥8~9 안팎","10월 한정 파이는 매장에서 확인"],
+  tip:["배부르면 포장해서 와이탄 걸으며 먹기."],
+  meta:"〔麦当劳(黄浦悦荟广场店)|마이당라오 웨후이광창뎬|맥도날드 열회광장점〕 南京东路353号 1F · 06:30~24:00"},
+ {t:"19:15",p:"bund",k:"야경",mv:"도보 7분",hook:"100년 된 유럽 건물 너머로 미래 도시가 빛나는, 상하이의 얼굴",name:"와이탄 야경 산책",
+  fam:["강 건너 동방명주·상하이타워·진마오타워 스카이라인","등 뒤로 늘어선 1920~30년대 건물 52채 조명"],
+  tip:["<b>목요일 조명은 22:00에 꺼져요.</b> 지금이 제일 예쁠 때.","2층 높이 강변 산책로로 올라가서 남쪽(十六铺 방향)으로 걸어요."]},
+ {t:"20:00",p:"cruise",k:"유람선",opt:1,mv:"와이탄 따라 남쪽으로 도보 15분",hook:"배 위에서 와이탄과 푸동을 양쪽에 두고 보는 40분",name:"황푸강 야간 유람선 (선택)",
+  fam:["〔十六铺码头|스류푸 마터우|16포 부두〕 출발, 와이탄↔루자쭈이 왕복 약 40분","성인 ¥115~135"],
+  tip:["야간편 약 20~30분 간격. 20:00 전후 편을 타면 21:00 전에 내려요.","한국어 가이드 옵션: <a href='https://experiences.myrealtrip.com/products/3487393' target='_blank' rel='noopener'>마이리얼트립</a>(16,632원~)","안 탈 거면 와이탄·난징동루 산책을 더 하고 21:00에 출발."],
+  meta:"中山东二路551号 十六铺码头 · 막차 시간은 현장 확인"},
+ {t:"21:30",p:"flair",k:"루프탑 바",mv:"디디 15분 · ¥30 (21:05 출발, 강 밑 터널로 푸동) · 또는 2호선 南京东路→陆家嘴 1정거장",resv:1,hook:"58층 야외 테라스, 동방명주가 손에 닿을 듯한 칵테일 한 잔",name:"Flair 루프탑 (21:30 예약)",
+  fam:["리츠칼튼 푸동 58층. 바로 옆이 동방명주, 강 건너가 와이탄","시그니처 칵테일 ¥150~220 안팎"],
+  tip:["<b>목요일 와이탄 조명은 22:00에 꺼져요</b> → 도착하자마자 와이탄 쪽 테라스 사진부터.","52층에서 체크인·대기 후 58층으로 올라가요. 스마트 캐주얼, 17:30 이후 만 18세 이상.","<b>최소 소비 주의:</b> 공식 예약 페이지 기준 저녁 테이블 패키지가 2인 실내 ¥1,680 / 테라스 ¥2,288부터예요. 칵테일만 마실 거면 '바 좌석·음료만' 조건인지 예약할 때 꼭 확인."],
+  meta:"〔上海浦东丽思卡尔顿酒店|상하이 푸둥 리쓰카얼둔 주뎬|리츠칼튼 푸동〕 58F (世纪大道8号 国金中心) · 목 12:00~01:00 · ☎ +86 21 2020 1778 · <a href='https://www.szuo.com/en/marriott-shasz-1003534/reserve' target='_blank' rel='noopener'>온라인 예약(TableCheck)</a>"},
+ {t:"23:00",p:"h1",k:"숙소",mv:"디디 20분 · ¥40 (강 건너 푸시로)",name:"원동호텔(숙소①) 복귀",
+  tip:["숙소 근처 편의점(全家·罗森·7-Eleven)에서 〔烤肠|카오창|구운 소시지〕 하나 ¥5~8."]}
+];
+var D2=[
+ {t:"09:45",p:"h1",k:"숙소",name:"원동호텔(숙소①) 체크아웃 · 짐 맡기기",tip:["프런트에 〔寄存行李|지춘싱리|짐 보관〕 요청. 13:40쯤 찾으러 와요."]},
+ {t:"10:00",p:"jianbing",k:"간식",mv:"원동호텔(숙소①)에서 도보 7분",name:"젠빙 한 장 · 卷王煎饼",hook:"얇은 반죽에 계란·바삭이를 말아 주는 중국식 길거리 크레페",
+  fam:["〔煎饼果子|젠빙궈쯔|계란 크레페 말이〕 ¥8~15","〔鸡蛋饼|지단빙|계란 전병〕도 비슷"],
+  tip:["바이두 평점 4.6, 1인 ¥18. <b>10:00에 열어요</b> → 체크아웃 후 바로.","아침을 안 먹는 일정이라 둘이 한 장 나눠 먹기 추천."],meta:"〔卷王煎饼(上海首店)|쥐안왕 젠빙 상하이서우뎬|젠빙 왕 상하이 1호점〕 黄浦区 广西北路476号 · 매일 10:00~23:00 · ☎ 192 3006 9707"},
+ {t:"10:40",p:"wukang",k:"사진",mv:"젠빙집 앞에서 디디 20분 · ¥30",hook:"뱃머리처럼 뾰족한 건물 앞, 상하이에서 가장 많이 찍히는 교차로",name:"우캉맨션 (지나가며 사진)",
+  fam:["1924년 삼각형 아파트 〔武康大楼|우캉다러우|우캉 맨션〕. 영화 《색, 계》 배경"],
+  tip:["건너편 횡단보도에서 건물 전체가 나오게. 오전이라 사람이 적어요. 20분."]},
+ {t:"11:05",p:"iccf",k:"카페·정원",mv:"도보 12분 (플라타너스 길)",hook:"헝산루 플라타너스 아래 숨은 상하이 속 남프랑스",name:"ICCF 가든",
+  fam:["1920년대 건물 4동 + 2,000㎡ 프로방스풍 정원","카페 SILEX GOURMET 빵·커피, 레스토랑 SILEX, ICICLE·CARVEN 매장"],
+  tip:["정원 가운데 꽃밭이 포토 스팟. 테라스에서 커피 한 잔. 50분.","카페 SILEX GOURMET은 아침 8시부터 빵·커피, 17시 이후엔 와인·타파스."],
+  meta:"徐汇区 衡山路2号 (东平路12号 쪽 입구도 있음) · 카페 08:00~ 종일"},
+ {t:"12:05",p:"dongliang",k:"편집숍",mv:"디디 10분 · ¥15",hook:"100년 된 영국식 저택에서 만나는 중국 디자이너 편집숍의 정점",name:"메종 둥량",
+  fam:["중국 독립 디자이너 브랜드 + Phoebe Philo·Alaïa·Dries Van Noten 코너(2025년 6월 확장)","1층 찻집에서 〔功夫茶|궁푸차|중국식 다도〕"],
+  tip:["둘러보고 차 한 잔까지 1시간. 예약 필요 없음."],
+  meta:"长宁区 武夷路168号 1号别墅 · <b>11:00~20:00</b> (바이두 지도, 2026년 5월 리뷰)"},
+ {t:"13:15",p:"dimdim",k:"점심",mv:"디디 15분 · ¥25",hook:"광저우 국민 딤섬, 커스터드가 흘러내리는 류사바오",name:"점도덕 (딤섬)",
+  fam:["〔虾饺皇|샤자오황|새우만두〕","〔金莎红米肠|진샤훙미창|바삭 창펀〕 인스타 추천 홍미창펀","〔流沙包|류사바오|커스터드 찐빵〕","1인 약 ¥80~100"],
+  tip:["현장 번호표. 금요일 점심은 대기가 짧은 편.","주문서에 체크하거나 QR 주문."],
+  meta:"黄浦区 黄陂南路838弄 中海环宇荟 B1 B125 · 09:00~21:30 · 1인 약 ¥85 · ☎ 021-6333-3213"},
+ {t:"14:20",p:"h1",k:"숙소",mv:"디디 10분",name:"원동호텔(숙소①)에서 짐 찾기"},
+ {t:"14:55",p:"h2",k:"숙소",mv:"원동호텔(숙소①) → 유어코브(숙소②) 디디 25분 · ¥50~60",name:"유어코브(숙소②) 체크인 · 휴식",tip:["체크인 14:00부터. 저녁이 길어서 1시간 반 쉬어요."]},
+ {t:"17:00",p:"trees",k:"명소",mv:"유어코브(숙소②)에서 디디 30분 · ¥50 (16:30 출발)",hook:"기둥 1,000개 위에 나무가 자라는 공중 숲",name:"1000 Trees",
+  fam:["토머스 헤더윅이 설계한 계단식 쇼핑몰 〔天安千树|톈안 첸수|천 그루 나무〕","해 진 뒤 기둥 조명이 켜지는 모습"],
+  tip:["일몰 17:25 전후가 딱. <b>쑤저우허 맞은편 강변</b>에서 찍어야 전체가 나와요.","외관·강변은 24시간, 몰 안은 10:00~22:00. 무료."],
+  meta:"普陀区 莫干山路600号 · 13호선 〔江宁路|장닝루〕역 도보 5~10분"},
+ {t:"18:00",p:"malatang",k:"저녁",mv:"도보 12분 또는 디디 5분",hook:"소뼈 육수에 마장을 듬뿍, 상하이 사람들이 줄 서는 마라탕집",name:"류원샹 마라탕 창서우점",
+  fam:["〔麻辣烫|마라탕|골라 담는 매운 탕〕 소뼈 국물(〔牛骨汤|뉴구탕|소뼈 육수〕) + 마라","리뷰 단골 재료: 〔肥牛卷|페이뉴쥐안|우삼겹〕, 〔宽粉|콴펀|넓은 당면〕, 〔牛筋面|뉴진몐|쫄깃면〕, 연근","바이두 지도 평점 4.3 · 1인 약 ¥35 (2026년 9월 리뷰까지 확인)"],
+  tip:["① 바구니에 재료 담기 → ② 무게 재기 → ③ 국물·맵기 고르기(〔中辣|중라|중간 매운맛〕이면 충분히 매워요) → ④ 결제.","〔麻酱|마장|참깨소스〕 추가하면 고소해요.","<b>20:30에 문 닫아요.</b> 18:00에 먹고 18:40 서커스로 출발하면 딱 맞아요.","예비: 〔杨国福麻辣烫(静安国际中心店)|양궈푸 마라탕 징안궈지중신뎬|양궈푸 마라탕 징안국제센터점〕 裕通路89号 LG2 · 1인 ¥48"],
+  meta:"〔刘文祥麻辣烫(长寿店)|류원샹 마라탕 창서우뎬|류원샹 마라탕 장수점〕 · 普陀区 长寿路393号 亚新V6美食小镇 1F (亚新生活广场 옆) · 09:30~20:30 · ☎ 166 2126 7715 · 7·13호선 长寿路역 근처"},
+ {t:"19:30",p:"circus",k:"공연",mv:"디디 15~20분 · ¥30 (18:40 출발, 19:00 도착)",resv:1,hook:"철구 안을 오토바이 8대가 도는, 숨이 멎는 중국 기예",name:"ERA 서커스 (확정)",
+  fam:["〔时空之旅2|스쿵즈뤼|시공간 여행 2〕 곡예 + 미디어아트","<b>금요일은 60분판</b> → 20:30쯤 끝나요","피날레 철구 오토바이 쇼"],
+  tip:["30분 전(19:00) 도착. 티켓 교환·입장 줄이 있을 수 있어요.","플래시 촬영 금지."],
+  meta:"静安区 共和新路2266号 · 1호선 〔上海马戏城|상하이 마시청〕역 3번 출구 도보 3분"},
+ {t:"21:00",p:"hjyq",k:"야식",mv:"지하철 1호선으로 인민광장역 직행 약 20분 · ¥4",hook:"새벽 1시까지 연기 자욱한 꼬치 파티",name:"헌지우이치엔 양꼬치",
+  fam:["〔羊肉串|양러우촨|양꼬치〕","〔烤羊排|카오양파이|양갈비〕, 〔烤馒头|카오만터우|연유 구운 빵〕","1인 ¥80~120"],
+  tip:["<b>공연 끝나자마자 다중뎬핑에서 원격 번호표(〔排号|파이하오|줄서기〕)</b> 뽑고 출발.","테이블마다 회전 화로. 직접 돌려 가며 구워요.","매운 꼬치가 더 당기면 〔麻辣串|마라촨|매운 꼬치〕: 난징동루 근처 串串 가게(새벽까지)."],
+  meta:"南京东路830号 第一百货 B관 6F · 11:00~03:00 (바이두 지도) · ☎ 135 6401 2214"},
+ {t:"22:45",p:"h2",k:"숙소",mv:"디디 20분 · ¥40",name:"유어코브(숙소②) 복귀"}
+];
+function disneyDay(){
+ return [
+  {t:"06:55",p:"h2",k:"출발",name:"유어코브(숙소②)에서 나서기",tip:["여권 원본·디즈니 티켓(앱) 챙기기!"]},
+  {t:"07:00",p:"yonghe",k:"아침",mv:"도보 3분 (약 170m)",hook:"갓 튀긴 油条를 따끈한 豆浆에 찍어 먹는 상하이 아침",name:"융허다왕 · 중국식 아침",
+   fam:["〔油条|유탸오|꽈배기 모양 튀김빵〕 + 〔豆浆|더우장|두유〕(달게 甜 / 짭짤하게 咸)","〔皮蛋瘦肉粥|피단서우러우저우|피단·살코기 죽〕","〔小笼包|샤오룽바오〕, 〔饭团|판퇀|주먹밥〕","세트 ¥15~25"],
+   tip:["키오스크·카운터 주문, 알리페이 결제. 20분이면 먹고 나와요.","<b>병원(仁济医院) 외래동 13호관 지하 1층</b> 매장이에요. 토요일이라 혹시 닫혀 있으면 숙소 옆 편의점(全家·罗森)의 粥·饭团·包子로 대체."],
+   meta:"〔永和大王(仁济医院店)|융허다왕 런지이위안뎬|영화대왕 인제병원점〕 浦东新区 浦建路160号 仁济医院 门诊13号楼 B1 · 06:30~ (2025 자료 기준)"},
+  {t:"07:30",p:null,k:"출발",name:"디디 호출 → 디즈니",tip:["디디 30~35분 · ¥80~100. 목적지 〔上海迪士尼度假区 西公共交通枢纽|디스니 두자취 시궁궁자오퉁수뉴|디즈니 서쪽 교통허브〕 (택시 하차 공식 장소).","지하철은 4호선 → 6호선 → 11호선 〔迪士尼|디스니〕역, 약 1시간."]},
+  {t:"08:00",p:"disney",k:"입장",mv:"디디 30분",hook:"중국 최대 디즈니성 앞, 문 열리기 30분 전이 승부",name:"보안검색 · 입장",
+   tip:["여권 원본 필수(구매 때 쓴 여권).","<b>10/17 운영 08:30~22:00</b> (공식 캘린더 10/2 확인). 퍼레이드 12:15·15:45.","입장하자마자 앱 대기시간 확인. 위챗 〔神奇等候时间|선치 덩허우 스젠|신기한 대기시간〕 검색도 가능."]},
+  {t:"08:30",p:null,k:"놀이기구",hook:"인기 순서대로: 주토피아 → 트론 → 캐리비안",name:"오전 인기 어트랙션",
+   fam:["<b>주토피아: 핫 퍼슈트</b> 파크 맨 뒤쪽(판타지랜드 뒤). 무섭지 않고 낮·밤 분위기가 달라 두 번 추천","<b>트론 라이트사이클</b> 오토바이 자세 롤러코스터. 이 파크의 간판","<b>캐리비안의 해적</b> 다른 디즈니와 완전히 다른 버전. 앞자리 추천","<b>소어링</b> 세계 명소 위를 나는 체험 (9/30 공식 휴장 목록에 없음)"],
+   tip:["10/16~18은 핼러윈 특별 기간 첫 주말이라 매우 붐벼요. Premier Access(1개 ¥150~180)는 <b>트론이나 캐리비안</b>에.","공식 앱에서 입장권 연결 후 구매."]},
+  {t:"11:00",p:null,k:"식사",hook:"파크 안에서 해결하는 점심·저녁",name:"파크 식사 · 간식",
+   fam:["주토피아 〔爪爪棒冰|자오자오 방빙|발바닥 아이스바〕 약 ¥45","핼러윈 한정 블루 하울링 음료, 검은 추로스·검은 버거 (2025 기준)","미키 와플·미키 소시지번"],
+   tip:["점심은 11:00 전이나 13:30 이후로. 1인 식비 ¥150~300."]},
+  {t:"오후",p:null,k:"시즌",hook:"빌런이 성을 점령한 핼러윈",name:"핼러윈 이벤트 · 공연",
+   fam:["도날드덕 핼러윈 퍼레이드(빌런 등장), 성 앞 빌런 셀러브레이션, '악당 왕' 피트","주토피아 하울링 이벤트 17:10 / 18:10 / 19:10"],
+   tip:["퍼레이드 시간은 당일 앱 확인."],
+   meta:"<a href='https://tdrexplorer.com/shanghai-disneyland-halloween-2026/' target='_blank' rel='noopener'>TDR Explorer</a> · <a href='https://www.shanghaidisneyresort.com/en/park-calendar' target='_blank' rel='noopener'>공식 캘린더</a>"},
+  {t:"21:15",p:null,k:"피날레",hook:"성 전체가 스크린이 되는 불꽃놀이",name:"ILLUMINATE! 야간 불꽃쇼",
+   tip:["<b>10/17 공연 20:00 · 21:15 두 번</b> (공식 캘린더). 21:15 회차를 보고 나와요.","성 정면 <b>뒤쪽</b>에 서면 끝나고 빠져나가기 쉬워요."]},
+  {t:"22:40",p:"haidilao",k:"야식",mv:"디즈니 서쪽 교통허브에서 디디 30분 · ¥90 (대기 길 수 있음)",opt:1,hook:"새벽까지 여는, 서비스가 요리인 훠궈",name:"하이디라오 바리춘톈 푸젠점 (체력 되면)",
+   fam:["〔番茄锅|판체궈|토마토 탕〕 + 〔麻辣锅|마라궈|마라 탕〕 반반","수타면 쇼 〔捞面|라오몐|국수 뽑기〕, 〔虾滑|샤화|새우 완자〕","1인 약 ¥108~150"],
+   tip:["반 사이즈 주문 가능. 하이디라오 앱/위챗 미니프로그램으로 원격 줄서기.","⚠ 예전 후보였던 장양루점(张杨路620号)은 <b>폐업</b>했어요(바이두 지도 '已关闭'). 트리플에 넣은 '하이디라오훠궈 장양루 점'은 지우고 이 지점으로.","너무 지치면 숙소로 바로 가요."],
+   meta:"浦东 浦建路118号 巴黎春天 5F (북3문 직통 엘리베이터) · 10:00~07:00 · 1인 약 ¥98 · ☎ 021-6878-3037 · 유어코브(숙소②)까지 약 200m, 도보 3분"},
+  {t:"00:15",p:"h2",k:"숙소",mv:"도보 3분 (약 200m)",name:"유어코브(숙소②) 복귀"}
+ ];
+}
+var D4=[
+  {t:"07:50",p:"h2",k:"출발",name:"유어코브(숙소②) 체크아웃 → 디디로 공항",tip:["약 40~50분 · ¥100~150. 목적지 〔浦东国际机场|푸둥궈지지창|푸동국제공항〕, 터미널은 항공권에서 확인."]},
+  {t:"08:45",p:"pvg",k:"공항",mv:"디디 45분",name:"체크인 · 출국",tip:["용량 표시 흐린 보조배터리는 출국 검색에서 뺏길 수 있어요.","공항 맥도날드에서 못 먹은 파이 마지막으로."]},
+  {t:"11:10",p:null,k:"귀국",name:"KE882 출발 → 14:20 인천"}
+];
+var PLAN={
+ 1:{title:"쌀국수로 시작해 58층 루프탑에서 끝나는 첫날",sum:"디디로 원동호텔(숙소①) → 쌀국수 → 임시정부 → 프라다 16:00 → hoxa → 와이탄 → (유람선) → Flair 21:30 → 디디로 숙소",stops:D1},
+ 2:{title:"정원·편집숍 오전, 공중 숲 노을, 서커스, 양꼬치",sum:"원동호텔(숙소①) 체크아웃 → 우캉·ICCF·둥량 → 점도덕 → 유어코브(숙소②) 이동 → 1000 Trees → 마라탕 → ERA 19:30 → 양꼬치",stops:D2},
+ 3:{title:"빌런이 성을 점령한 10주년 디즈니",sum:"07:00 숙소 옆 중국식 아침 → 디즈니 · 오전 인기 3종 → 파크 식사 → 핼러윈 → 불꽃 → (선택) 하이디라오",stops:disneyDay()},
+ 4:{title:"아침 일찍, 여유 있게 공항으로",sum:"유어코브(숙소②) 07:50 출발 → 11:10 비행기",stops:D4}
+};
+var DAYS=[{d:1,lbl:"10/15 목"},{d:2,lbl:"10/16 금"},{d:3,lbl:"10/17 토"},{d:4,lbl:"10/18 일"}];
+/* 꼭 갈 곳 → 배치 */
+var MUST=[
+ ["식당","하이디라오",3,"디즈니 끝나고 야식 · 바리춘톈 푸젠점 (장양루점은 폐업)"],
+ ["식당","점도덕",2,"점심 · 신천지 남쪽 中海环宇荟점"],
+ ["식당","헌지우이치엔",2,"서커스 끝나고 야식"],
+ ["식당","마라탕 → 류원샹 마라탕(刘文祥麻辣烫 长寿店)",2,"서커스 전 저녁 · 1000 Trees에서 도보 12분"],
+ ["식당","米线 (미셴)",1,"도착 첫 끼 · 숙소 도보 5분"],
+ ["식당","春饼 (饼中王)",0,"饼中王은 다롄 체인이라 상하이 지점이 없어요. 상하이 춘빙집은 양푸구라 동선 밖 → 제외"],
+ ["간식","煎饼 (젠빙)",2,"10:00 · 卷王煎饼 숙소 도보 7분"],
+ ["간식","香肠 (소시지)",1,"밤 · 숙소 근처 편의점"],
+ ["간식","麻辣串 (마라촨)",2,"야식 · 양꼬치 대신/추가"],
+ ["간식","릴리안 베이커리",1,"점심 뒤 인민광장 (선택)"],
+ ["간식","맥도날드 파이",1,"19:00 · 남경동로 353번지 매장"],
+ ["장소","1000 Trees",2,"일몰 17:25 맞춰서"],
+ ["장소","ICCF Garden",2,"오전 커피"],
+ ["장소","Maison Dongliang",2,"오전 쇼핑"],
+ ["장소","Hoxa bistro",1,"저녁 · 동방명주 뷰 테라스"],
+ ["장소","Mi Shang Prada Rong Zhai",1,"오후 디저트 · 예약"],
+ ["바","루프탑 바 → Flair",1,"21:30 예약 · 리츠칼튼 푸동 58층"],
+ ["식당","중국식 아침 (油条·粥)",3,"07:00 永和大王 · 숙소 도보 3분"],
+ ["확정","ERA 서커스",2,"19:30"],
+ ["확정","디즈니",3,"하루 종일"]
+];
+/* ---------- 지도 ---------- */
+var W=400,H=300,COS=Math.cos(31.23*Math.PI/180);
+function drawMap(stops,day){
+  var pts=[];stops.forEach(function(s){var pl=s.p&&P[s.p];if(pl&&!pl.far)pts.push(pl.ll);});
+  var hotel=day<=2?P.h1:P.h2; pts.push(hotel.ll); if(day===2) pts.push(P.h2.ll);
+  if(day>=3){ // 숙소 하나뿐인 날: 시내 + 목적지 방향으로 지도를 넓혀서 방향이 보이게
+    LANDMARK.forEach(function(l){pts.push(l[1])});
+    stops.forEach(function(s){var f=s.p&&P[s.p];if(f&&f.far)pts.push([hotel.ll[0]+(f.ll[0]-hotel.ll[0])*.3,hotel.ll[1]+(f.ll[1]-hotel.ll[1])*.3]);});
+  }
+  var la=pts.map(function(p){return p[0]}),lo=pts.map(function(p){return p[1]});
+  var minLa=Math.min.apply(0,la),maxLa=Math.max.apply(0,la),minLo=Math.min.apply(0,lo),maxLo=Math.max.apply(0,lo);
+  var cLa=(minLa+maxLa)/2,cLo=(minLo+maxLo)/2;
+  var spanX=Math.max((maxLo-minLo)*COS,0.05),spanY=Math.max(maxLa-minLa,0.035);
+  var sc=Math.min((W-60)/spanX,(H-60)/spanY);
+  function pr(ll){return [W/2+(ll[1]-cLo)*COS*sc, H/2-(ll[0]-cLa)*sc];}
+  function path(arr){return arr.map(function(p,i){var q=pr(p);return (i?"L":"M")+q[0].toFixed(1)+" "+q[1].toFixed(1)}).join(" ");}
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+day+'일차 동선 지도"><defs><marker id="ar'+day+'" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--dc)"/></marker></defs>';
+  svg+='<rect width="'+W+'" height="'+H+'" fill="var(--surface)"/>';
+  svg+='<path d="'+path(RIVER)+'" fill="none" stroke="var(--river)" stroke-width="'+Math.min(16,Math.max(8,sc*0.0018)).toFixed(0)+'" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>';
+  svg+='<path d="'+path(CREEK)+'" fill="none" stroke="var(--river)" stroke-width="4" stroke-linecap="round" opacity=".7"/>';
+  // 강 라벨
+  var rl=null;RIVER.forEach(function(p){var q=pr(p);if(!rl&&q[0]>30&&q[0]<W-60&&q[1]>40&&q[1]<H-40)rl=q;});
+  if(rl) svg+='<text x="'+(rl[0]+10)+'" y="'+rl[1]+'" font-size="10" fill="var(--sky)">황푸강</text>';
+  // 랜드마크
+  var ptsXY=[];stops.forEach(function(s){var pl=s.p&&P[s.p];if(pl&&!pl.far)ptsXY.push(pr(pl.ll));});ptsXY.push(pr(hotel.ll));
+  LANDMARK.forEach(function(l){var q=pr(l[1]);if(ptsXY.some(function(p){return Math.abs(p[0]-q[0])<45&&Math.abs(p[1]-q[1])<16}))return;if(q[0]>0&&q[0]<W&&q[1]>0&&q[1]<H)svg+='<text x="'+q[0].toFixed(0)+'" y="'+q[1].toFixed(0)+'" font-size="9.5" fill="var(--muted)" opacity=".75" text-anchor="middle">'+l[0]+'</text>';});
+  // 경로
+  var seq=[],num=0,marks=[];
+  stops.forEach(function(s,i){var pl=s.p&&P[s.p];if(!pl)return;
+    var q; if(pl.far){ // 숙소에서 그 방향으로 지도 가장자리까지
+      var h=pr(hotel.ll),f=pr(pl.ll),dx=f[0]-h[0],dy=f[1]-h[1];
+      var t=Infinity; if(dx>0)t=Math.min(t,(W-18-h[0])/dx); if(dx<0)t=Math.min(t,(18-h[0])/dx); if(dy>0)t=Math.min(t,(H-18-h[1])/dy); if(dy<0)t=Math.min(t,(18-h[1])/dy);
+      q=[Math.min(Math.max(h[0]+dx*t,62),W-62),h[1]+dy*t];}
+    else q=pr(pl.ll);
+    var isHotel=!!pl.hotel; var n=(isHotel||pl.far)?null:++num; s._n=n;
+    seq.push({q:q,walk:/도보/.test(s.mv||"")&&!/디디|지하철|택시|페리|호선/.test(s.mv||""),far:pl.far,name:pl.n,n:n,hotel:isHotel,idx:i});
+  });
+  for(var i=1;i<seq.length;i++){var a=seq[i-1].q,b=seq[i].q,dx=b[0]-a[0],dy=b[1]-a[1],L=Math.sqrt(dx*dx+dy*dy);if(L<4)continue;
+    var sh=Math.min(12,L/3),bx=b[0]-dx/L*sh,by=b[1]-dy/L*sh,ax=a[0]+dx/L*Math.min(10,L/3),ay=a[1]+dy/L*Math.min(10,L/3);
+    svg+='<path d="M'+ax.toFixed(1)+' '+ay.toFixed(1)+' L'+bx.toFixed(1)+' '+by.toFixed(1)+'" stroke="var(--dc)" stroke-width="2.6" fill="none" '+(seq[i].walk?'':'stroke-dasharray="7 4" ')+'marker-end="url(#ar'+day+')" opacity=".9"/>';}
+  // 마커
+  var placed=[];
+  seq.forEach(function(m){var x=m.q[0],y=m.q[1];
+    if(m.far){ if(placed.some(function(p){return p.f===m.name}))return;
+      var pl2=Object.keys(P).map(function(k){return P[k]}).filter(function(v){return v.n===m.name})[0];
+      var R=6371,a1=hotel.ll[0]*Math.PI/180,a2=pl2.ll[0]*Math.PI/180,dl=(pl2.ll[1]-hotel.ll[1])*Math.PI/180;
+      var dist=Math.round(R*Math.acos(Math.min(1,Math.sin(a1)*Math.sin(a2)+Math.cos(a1)*Math.cos(a2)*Math.cos(dl))));
+      var txt=m.name+' · 직선 '+dist+'km', w=txt.length*9+18; x=Math.min(Math.max(x,w/2+4),W-w/2-4); y=Math.min(Math.max(y,14),H-14);
+      svg+='<g class="mk" data-i="'+m.idx+'"><rect x="'+(x-w/2)+'" y="'+(y-11)+'" width="'+w+'" height="22" rx="11" fill="var(--dc)"/><text x="'+x+'" y="'+(y+4)+'" font-size="11" font-weight="700" fill="var(--surface)" text-anchor="middle">'+txt+'</text></g>';
+      placed.push({x:x,y:y,f:m.name});return;}
+    if(m.hotel){ if(placed.some(function(p){return p.h&&Math.abs(p.x-x)<2&&Math.abs(p.y-y)<2}))return;
+      svg+='<g class="mk" data-i="'+m.idx+'"><rect x="'+(x-11)+'" y="'+(y-11)+'" width="22" height="22" rx="5" fill="var(--ink)"/><text x="'+x+'" y="'+(y+4)+'" font-size="11" font-weight="700" fill="var(--surface)" text-anchor="middle">숙</text></g>';
+      placed.push({x:x,y:y,h:1}); lab(x,y,m.name.replace(/^숙소. /,""),1); return;}
+    var tries=0; while(tries<4&&placed.some(function(p){return Math.abs(p.x-x)<17&&Math.abs(p.y-y)<17})){x+=15;y-=9;tries++;}
+    svg+='<g class="mk" data-i="'+m.idx+'"><circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="10" fill="var(--dc)" stroke="var(--surface)" stroke-width="2"/><text x="'+x.toFixed(1)+'" y="'+(y+4).toFixed(1)+'" font-size="11" font-weight="700" fill="var(--surface)" text-anchor="middle">'+m.n+'</text></g>';
+    placed.push({x:x,y:y}); lab(x,y,m.name);
+  });
+  function lab(x,y,t,bold){ var lx=x+14,ly=y+4,anchor="start"; if(lx+t.length*10>W-4){lx=x-14;anchor="end";}
+    var clash=labels.some(function(l){return Math.abs(l.y-ly)<11&&Math.abs(l.x-lx)<70});
+    if(clash){ly=y-14;} if(labels.some(function(l){return Math.abs(l.y-ly)<11&&Math.abs(l.x-lx)<70}))return;
+    labels.push({x:lx,y:ly}); svgL+='<text x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" font-size="10.5" '+(bold?'font-weight="700" ':'')+'fill="var(--ink)" text-anchor="'+anchor+'" stroke="var(--surface)" stroke-width="3" paint-order="stroke">'+t+'</text>'; }
+  // 방위·축척
+  var km=sc/111,kmLen=km,kmTxt="1km";
+  [[0.5,"500m"],[1,"1km"],[2,"2km"],[5,"5km"]].forEach(function(o){var L=km*o[0];if(L>=28&&L<=110){kmLen=L;kmTxt=o[1];}}); // 조건에 맞는 가장 긴 막대
+  svgL+='<g font-size="10" fill="var(--muted)"><path d="M'+(W-20)+' 30 L'+(W-14)+' 16 L'+(W-8)+' 30 L'+(W-14)+' 26Z" fill="var(--muted)"/><text x="'+(W-14)+'" y="42" text-anchor="middle">N</text>';
+  svgL+='<path d="M12 '+(H-14)+' h'+kmLen.toFixed(0)+'" stroke="var(--muted)" stroke-width="2"/><text x="12" y="'+(H-20)+'">'+kmTxt+'</text></g>';
+  return svg+svgL+'</svg>';
+}
+var labels=[],svgL="";
+
+/* ---------- 렌더 ---------- */
+var state={day:+(ls("sh-day2")||1)};
+if(!(state.day>=1&&state.day<=4))state.day=1;
+var elMust=document.getElementById("must"),elBar=document.getElementById("daybar"),elDay=document.getElementById("day");
+
+function renderMust(){
+  var groups={};MUST.forEach(function(m){(groups[m[0]]=groups[m[0]]||[]).push(m);});
+  var h='';Object.keys(groups).forEach(function(g){
+    h+='<div class="must-g"><span class="must-k">'+g+'</span>';
+    groups[g].forEach(function(m){
+      h+=m[2]?'<button type="button" class="must-i dc'+m[2]+'" data-jump="'+m[2]+'"><b>D'+m[2]+'</b><span><strong>'+m[1]+'</strong> '+m[3]+'</span></button>'
+             :'<div class="must-i out"><b>제외</b><span><strong>'+m[1]+'</strong> '+m[3]+'</span></div>';
+    });
+    h+='</div>';});
+  elMust.innerHTML=h;
+}
+function renderBar(){
+  elBar.innerHTML=DAYS.map(function(x){return '<button type="button" role="tab" class="dc'+x.d+'" data-d="'+x.d+'" aria-selected="'+(x.d===state.day)+'"><b>DAY '+x.d+'</b><span>'+x.lbl+'</span></button>';}).join("");
+}
+/* 일정별 패스 기준(pass)과 먹는 양 조절(belly) */
+var EXTRA={
+ 1:{
+  "상탕 윈난샤오관":{belly:"오늘 첫 끼라 1인 1그릇 든든하게 OK. 다만 1시간 반 뒤 프라다 디저트, 3시간 뒤 hoxa 저녁이 있으니 곁들임(卤烤)은 1개만.",pass:"주문 후 음식까지 10~15분 걸려요. 15:00엔 일어나기."},
+  "릴리안 에그타르트":{belly:"점심 직후라 1개 사서 둘이 반씩.",pass:"15:05까지 점심이 안 끝났으면 패스 → 바로 디디로 임시정부."},
+  "대한민국 임시정부":{pass:"15:40엔 무조건 디디 호출(프라다 16:00 예약). 15:30 넘어 도착하면 입구 사진만 찍고 바로 이동."},
+  "미상 프라다 룽자이":{belly:"디저트 2개 + 음료 2잔이면 충분. 애프터눈티 세트(1인 ¥488)는 양이 많아서 1시간 반 뒤 hoxa 저녁이 안 들어가요.",pass:"17:10엔 일어나서 디디 호출."},
+  "hoxa bistro":{belly:"프라다 디저트 직후라 배가 덜 꺼진 상태예요. 大盘鸡는 小份(작은 사이즈) + 양꼬치 몇 개 정도로 둘이 나눠요. 手抓饭까지 시키면 남아요.",pass:"신장요리는 나오는 데 20~30분 걸려요. 18:50엔 계산하고 나오기."},
+  "맥도날드 파이":{belly:"저녁 직후라 파이 1개만 사서 나눠 먹거나 포장.",pass:"19:10 넘으면 패스 → 바로 와이탄."},
+  "황푸강 야간 유람선":{pass:"20:15 넘어서 출발하는 배밖에 없으면 패스(Flair 21:30 예약). 21:05엔 Flair로 출발해야 해요."},
+  "Flair 루프탑":{belly:"저녁·디저트를 다 먹은 뒤라 칵테일만. 안주는 시키지 않아도 돼요."}
+ },
+ 2:{
+  "젠빙 한 장":{belly:"점심(13:15 딤섬)까지 3시간이라 1장을 둘이 나눠 먹기.",pass:"10:15 넘으면 패스 → 바로 우캉맨션."},
+  "우캉맨션":{pass:"사진 15분. 10:55엔 ICCF로 걸어가기."},
+  "ICCF 가든":{belly:"커피 위주로, 빵은 1개만(점심이 2시간 뒤).",pass:"11:50엔 둥량으로 출발. 11:20 넘어 도착하면 커피는 테이크아웃."},
+  "메종 둥량":{pass:"12:55엔 디디 호출해야 13:15 점심. 12:30 넘어 도착하면 1층만 보고 나오기."},
+  "점도덕":{belly:"딤섬 4~5접시 + 창펀 1개 정도로 둘이 나눠요. 저녁은 18:00 마라탕이라 그때까지 간식 없음.",pass:"딤섬은 하나씩 나와서 30~40분 걸려요. 14:05엔 계산."},
+  "1000 Trees":{pass:"17:45엔 마라탕으로 걷기 시작. 해 진 직후(17:30) 사진이 제일 좋아요."},
+  "류원샹 마라탕":{belly:"서커스 뒤 양꼬치 야식이 있으니 1인 300~400g만 담기.",pass:"끓이는 데 10분 걸려요. 18:40엔 무조건 디디 호출(서커스 19:00 도착)."},
+  "헌지우이치엔 양꼬치":{belly:"마라탕 3시간 뒤라 출출할 시간이에요. 꼬치 10~15개 + 구운 빵 1개면 둘이 적당.",pass:"번호표 대기가 40분 넘으면 같은 건물 5층 하이디라오(07:00까지)나 숙소 쪽 편의점으로."}
+ },
+ 3:{
+  "융허다왕":{belly:"油条 1개 + 豆浆 1잔 + 죽 하나를 둘이 나누면 충분. 디즈니 들어가면 간식을 계속 먹게 돼요.",pass:"07:25 넘으면 포장해서 디디 안에서 먹기."},
+  "파크 식사":{belly:"점심은 가볍게 한 끼, 나머지는 간식 1~2개씩 나눠 먹기. 저녁은 불꽃놀이 전 18:30쯤."},
+  "하이디라오":{belly:"디즈니 간식 뒤라 반 사이즈(半份)로 2~3가지만.",pass:"불꽃 끝나고 22:30 넘어 숙소 도착이면 패스하고 쉬어요."}
+ }
+};
+function extraFor(day,name){var m=EXTRA[day]||{};for(var k in m){if(name.indexOf(k)===0)return m[k];}return null;}
+function li(a){return a&&a.length?'<ul>'+a.map(function(x){return '<li>'+T(x)+'</li>'}).join("")+'</ul>':"";}
+function renderDay(){
+  var d=PLAN[state.day],stops=d.stops;
+  labels=[];svgL="";
+  var map=drawMap(stops,state.day);
+  var resv=stops.filter(function(s){return s.resv}).map(function(s){return '<span class="chip resv">예약 · '+s.name.replace(/ \(.+\)$/,"")+'</span>'}).join("");
+  var hotelName=state.day===1?"잠: 원동호텔(숙소①)":state.day===2?"원동호텔(숙소①) → 유어코브(숙소②)":"잠: 유어코브(숙소②)";
+  if(state.day===4)hotelName="출발: 유어코브(숙소②)";
+  var h='<div class="day-head"><span class="tag">DAY '+state.day+' · '+DAYS[state.day-1].lbl+'</span><h3>'+d.title+'</h3><p class="small">'+d.sum+'</p><div class="chips"><span class="chip">'+hotelName+'</span>'+resv+'</div></div>';
+  var list=[];stops.forEach(function(s,i){if(s._n)list.push('<button type="button" data-go="'+i+'"><b>'+s._n+'</b>'+(P[s.p].n)+'</button>');});
+  h+='<div class="map">'+map+'<div class="map-legend"><span><i></i>도보</span><span><i class="dash"></i>택시·지하철</span><span>숙 = 숙소 · 번호를 누르면 해당 일정으로 · 장소 이름·"구글" 버튼은 구글맵, "바이두" 버튼은 AMap으로 열려요. 현지 지하철 길찾기는 바이두가 정확해요</span></div>'+(list.length?'<div class="map-list">'+list.join("")+'</div>':'')+'</div>';
+  h+='<div class="tl">';
+  stops.forEach(function(s,i){
+    if(s.mv&&i>0){var dest=gq(s),orig="",oc=null,on="";for(var j=i-1;j>=0;j--){if(gq(stops[j])){orig=gq(stops[j]);oc=cq(stops[j]);on=aq(stops[j]);break;}}
+      var dc=cq(s),links="";
+      if(orig&&dest&&orig!==dest) links+=' <a class="gm" href="'+gmPlaceEsc(gmDir(orig,dest,s.mv))+'" target="_blank" rel="noopener">구글 길찾기 ↗</a>';
+      if(oc&&dc&&(oc[0]!==dc[0]||oc[1]!==dc[1])) links+=' <a class="gm am" href="'+gmPlaceEsc(amapDir(oc,on||"출발",dc,aq(s)||"도착",s.mv))+'" target="_blank" rel="noopener">바이두 길찾기 ↗</a>';
+      h+='<div class="move"><span></span><span>'+T(s.mv)+links+'</span></div>';}
+    var pl=s.p&&P[s.p];
+    var no=s._n?'<span class="no">'+s._n+'</span>':(pl&&pl.hotel?'<span class="no h">숙</span>':'');
+    h+='<article class="stop'+(s.opt?' opt':'')+'" id="st'+i+'"><div class="t">'+no+'<span class="time">'+s.t+'</span></div><div class="c">';
+    if(s.hook) h+='<p class="hook">'+T(s.hook)+'</p>';
+    var ex=extraFor(state.day,s.name);
+    var q=gq(s);
+    h+='<h4>'+(q?'<a class="gm-name" href="'+gmPlaceEsc(gmPlace(q))+'" target="_blank" rel="noopener">'+T(s.name)+'</a>':T(s.name))+'<span class="kind">'+s.k+'</span>'+(q?' <a class="gm" href="'+gmPlaceEsc(gmPlace(q))+'" target="_blank" rel="noopener">구글맵 ↗</a>':'')+(aq(s)?' <a class="gm am" href="'+gmPlaceEsc(amap(aq(s)))+'" target="_blank" rel="noopener">바이두 ↗</a>':'')+'</h4>';
+    if(pl&&!pl.hotel) h+='<p class="small">'+T(pl.zh)+'</p>';
+    if(s.fam||s.tip){h+='<dl>'; if(s.fam)h+='<dt>유명한 것</dt><dd>'+li(s.fam)+'</dd>'; if(s.tip)h+='<dt>'+(s.fam?'이렇게 즐겨요':'메모')+'</dt><dd>'+li(s.tip)+'</dd>'; h+='</dl>';}
+    if(ex&&ex.belly) h+='<p class="note-belly"><b>배 조절</b> '+T(ex.belly)+'</p>';
+    if(ex&&ex.pass) h+='<p class="note-pass"><b>패스 기준</b> '+T(ex.pass)+'</p>';
+    if(s.meta) h+='<p class="meta">'+T(s.meta)+'</p>';
+    h+='</div></article>';
+  });
+  h+='</div>';
+  var pv=state.day>1?DAYS[state.day-2]:null,nx=state.day<4?DAYS[state.day]:null;
+  h+='<div class="daynav"><button type="button" data-d="'+(pv?pv.d:"")+'" '+(pv?'':'disabled')+'><span>← 이전 날</span><b>'+(pv?'DAY '+pv.d+' '+pv.lbl:'')+'</b></button><button type="button" data-d="'+(nx?nx.d:"")+'" '+(nx?'':'disabled')+'><span>다음 날 →</span><b>'+(nx?'DAY '+nx.d+' '+nx.lbl:'')+'</b></button></div><p class="swipe-hint">휴대폰에서는 일정을 좌우로 밀어도 날짜가 바뀌어요</p>';
+  elDay.className="dc"+state.day; elDay.innerHTML=h;
+  bindCopy(elDay);
+}
+function setDay(d,scroll){
+  if(!(d>=1&&d<=4))return; state.day=d; ls("sh-day2",String(d)); renderBar(); renderDay();
+  if(scroll){var top=elDay.getBoundingClientRect().top+window.scrollY-(document.getElementById("views").offsetHeight+elBar.offsetHeight)-6;
+    if(window.scrollY>top||scroll==="force") window.scrollTo({top:top,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});}
+}
+elMust.addEventListener("click",function(e){var b=e.target.closest("[data-jump]");if(b){setView("plan");}if(b)setDay(+b.getAttribute("data-jump"),"force");});
+elBar.addEventListener("click",function(e){var b=e.target.closest("[data-d]");if(b)setDay(+b.getAttribute("data-d"),true);});
+elDay.addEventListener("click",function(e){
+  var b=e.target.closest(".daynav [data-d]"); if(b&&b.getAttribute("data-d")){setDay(+b.getAttribute("data-d"),"force");return;}
+  var g=e.target.closest("[data-go]")||e.target.closest(".mk"); if(g){var i=g.getAttribute("data-go")||g.getAttribute("data-i"),el=document.getElementById("st"+i);
+    if(el){el.scrollIntoView({behavior:"smooth",block:"start"});el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash");setTimeout(function(){el.classList.remove("flash")},1600);}}
+});
+// 스와이프
+var sx=0,sy=0,st=0;
+elDay.addEventListener("touchstart",function(e){if(e.target.closest(".map,.tbl"))return;var t=e.touches[0];sx=t.clientX;sy=t.clientY;st=Date.now();},{passive:true});
+elDay.addEventListener("touchend",function(e){if(!st)return;var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;var ok=Date.now()-st<600;st=0;
+  if(ok&&Math.abs(dx)>70&&Math.abs(dy)<45){setDay(state.day+(dx<0?1:-1),"force");}},{passive:true});
+
+/* ---------- 화면 전환 ---------- */
+var views=document.getElementById("views");
+function setView(v){[].forEach.call(views.querySelectorAll("[data-view]"),function(b){b.setAttribute("aria-selected",b.getAttribute("data-view")===v)});
+  ["plan","prep","move","shop"].forEach(function(x){document.getElementById("v-"+x).hidden=x!==v;}); ls("sh-view",v);}
+views.addEventListener("click",function(e){var b=e.target.closest("[data-view]");if(!b)return;setView(b.getAttribute("data-view"));
+  var top=document.querySelector(".hero").offsetHeight; if(window.scrollY>top)window.scrollTo({top:top});});
+var hv=(location.hash||"").slice(1); setView(["plan","prep","move","shop"].indexOf(hv)>=0?hv:(ls("sh-view")||"plan"));
+
+// 여행 중이면 오늘 날짜 자동
+try{var n=new Date();if(n.getFullYear()===2026&&n.getMonth()===9&&n.getDate()>=15&&n.getDate()<=18)state.day=n.getDate()-14;}catch(e){}
+renderMust();renderBar();renderDay();
+function measure(){document.documentElement.style.setProperty("--navh",views.offsetHeight+"px");document.documentElement.style.setProperty("--dayh",elBar.offsetHeight+"px");}
+measure();window.addEventListener("resize",measure);
+
+
+/* ---------- D-day ---------- */
+try{var s0=new Date(2026,9,15),n0=new Date();n0.setHours(0,0,0,0);var df=Math.round((s0-n0)/86400000),dd=document.getElementById("dday");
+  dd.textContent=df>0?"D-"+df:(df>=-3?"여행 "+(1-df)+"일차":"다녀왔어요");}catch(e){}
+
+/* ---------- 복사 ---------- */
+function bindCopy(root){[].forEach.call(root.querySelectorAll("button.copy:not([data-b])"),function(b){b.setAttribute("data-b","1");b.addEventListener("click",function(){var txt=b.getAttribute("data-copy"),o=b.textContent;
+  function done(){b.textContent="복사됨";setTimeout(function(){b.textContent=o},1500)}
+  function sel(){var p=b.closest(".taxi").querySelector(".zhaddr"),r=document.createRange();r.selectNodeContents(p);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="길게 눌러 복사";}
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(done,sel);else sel();});});}
+bindCopy(document);
+
+/* ---------- 공유 체크리스트 ---------- */
+var boxes=[].slice.call(document.querySelectorAll("#checks input[type=checkbox]")),cs={},mode="local",LS="sh-checks",col=null;
+var stEl=document.getElementById("checkStatus"),stTx=document.getElementById("checkStatusText");
+function status(l,t){stEl.classList.toggle("live",l);stTx.textContent=t;}
+function apply(){var n=0;boxes.forEach(function(b){b.checked=!!cs[b.id];if(b.checked)n++;});
+  document.getElementById("progressBar").style.width=(boxes.length?n/boxes.length*100:0)+"%";document.getElementById("progressText").textContent=n+" / "+boxes.length+" 완료";}
+function loadL(){try{cs=JSON.parse(ls(LS)||"{}")||{}}catch(e){cs={}}}
+loadL();apply();status(false,"이 기기에 저장돼요");
+boxes.forEach(function(b){b.addEventListener("change",function(){cs[b.id]=b.checked;apply();
+  if(mode==="shared"&&col){col.doc(b.id).set({done:b.checked,at:Date.now()}).catch(function(){mode="local";ls(LS,JSON.stringify(cs));status(false,"공유 저장 권한이 없어 이 기기에만 저장해요");});}
+  else ls(LS,JSON.stringify(cs));});});
+(async function(){try{if(!window.claude||!window.claude.use)return;var db=await window.claude.use("db");if(!db)return;
+  col=db.collection("checks");mode="shared";status(true,"둘이 같이 보는 체크리스트 · 실시간 동기화");
+  col.onSnapshot(function(snap){var nx={};snap.docs.forEach(function(d){var v=d.data();if(v)nx[d.id]=!!v.done;});cs=nx;apply();},
+    function(){mode="local";loadL();apply();status(false,"동기화가 끊겨 이 기기에만 저장해요");});}catch(e){}})();
+})();
+</script>
+</body></html>
