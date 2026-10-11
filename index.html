@@ -187,6 +187,11 @@ footer{padding-block:30px 0;color:var(--muted);font-size:12.5px;display:grid;gap
 .must-i.out{cursor:default;opacity:.8}
 .must-i.out b{background:var(--muted)}
 .bar-card{display:grid;gap:10px;border-color:var(--dc)}
+.vbar{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.vbar button{font:inherit;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 6px}
+.vbar button[aria-pressed="true"]{border-color:var(--dc);background:var(--surface);box-shadow:inset 0 -3px 0 var(--dc);color:var(--dc)}
+.vprocon{background:var(--surface);border-radius:10px;padding:8px 10px;line-height:1.6}
+.vprocon b{color:var(--dc)}
 .cases{display:grid;gap:6px}
 .case{font-size:13.5px;border-radius:10px;padding:8px 11px;line-height:1.55;border:1px solid var(--line)}
 .case.ok{background:var(--jade-soft)} .case.ok b{color:var(--jade);margin-right:4px}
@@ -717,6 +722,26 @@ var D2=[
  {t:"23:05",p:"h2",k:"숙소",mv:"원동호텔(숙소①) → 유어코브(숙소②) 디디 25분 · ¥50~60",name:"유어코브(숙소②) 체크인",
   tip:["늦은 체크인이어도 예약은 그대로 유지돼요(이미 결제). 걱정되면 익스피디아 앱에서 '도착 예정 23시' 메시지 남기기."]}
 ];
+function pickD2(name){return D2.filter(function(x){return x.name.indexOf(name)===0;})[0];}
+function cp(o,ov){var r={};for(var k in o)r[k]=o[k];for(var j in ov)r[j]=ov[j];return r;}
+var D2B=[
+ {t:"09:45",p:"h1",k:"숙소",name:"원동호텔(숙소①) 체크아웃 · 짐 들고 출발",tip:["캐리어 들고 바로 디디 호출. 목적지 〔上海陆家嘴世博中心逸扉酒店|상하이 루자쭈이 스보중신 이페이주뎬|유어코브 호텔〕."]},
+ {t:"10:15",p:"h2",k:"숙소",mv:"디디 25분 · ¥50~60 (캐리어 실을 수 있게 Comfort 추천)",name:"유어코브(숙소②)에 짐 맡기기",
+  tip:["체크인은 14:00부터라 프런트에 짐만 맡겨요(〔寄存行李|지춘싱리|짐 보관〕). 밤에 와서 바로 체크인.","5분이면 끝나요. 같은 자리에서 디디 다시 호출."]},
+ cp(pickD2("우캉맨션"),{t:"10:55",mv:"디디 30~35분 · ¥55~65 (푸동 → 서쪽)"}),
+ cp(pickD2("ICCF 가든"),{t:"11:20"}),
+ cp(pickD2("메종 둥량"),{t:"12:10"}),
+ cp(pickD2("점도덕"),{t:"13:15",mv:"디디 15분 · ¥25 (13:00 출발)"}),
+ cp(pickD2("장위안 산책"),{t:"14:40",mv:"디디 15분 · ¥20 (14:25 출발)"}),
+ pickD2("미상 프라다 룽자이"),
+ pickD2("1000 Trees"),
+ pickD2("류원샹 마라탕"),
+ pickD2("ERA 서커스"),
+ pickD2("헌지우이치엔 양꼬치"),
+ cp(pickD2("젠빙 한 장"),{t:"22:30",opt:1,mv:"제일백화점에서 도보 5분",name:"젠빙 포장 (선택) · 卷王煎饼",
+  tip:["B안은 아침에 바로 푸동으로 가서 젠빙을 못 먹어요. 꼭 먹고 싶으면 양꼬치 뒤 포장해서 숙소에서. <b>23:00 마감</b>.","배부르면 패스."]}),
+ {t:"23:00",p:"h2",k:"숙소",mv:"디디 25분 · ¥50~60",name:"유어코브(숙소②) 체크인",tip:["맡겨 둔 짐 찾으면서 체크인."]}
+];
 function disneyDay(){
  return [
   {t:"06:55",p:"h2",k:"출발",name:"유어코브(숙소②)에서 나서기",tip:["여권 원본·디즈니 티켓(앱) 챙기기!"]},
@@ -753,7 +778,9 @@ var D4=[
 ];
 var PLAN={
  1:{title:"쌀국수, 임시정부, 신천지 산책, 와이탄 야경, 그리고 Flair 워크인",sum:"디디로 원동호텔(숙소①) → 쌀국수 → 임시정부 → 신천지 → hoxa → 와이탄 → (유람선) → Flair 워크인(실패 시 THE BERRY) → 숙소",stops:D1},
- 2:{title:"서쪽 골목 오전, 프라다 오후, 공중 숲 노을, 서커스, 양꼬치",sum:"원동호텔 체크아웃(짐은 밤까지 보관) → 우캉·ICCF·둥량 → 점도덕 → 장위안 → 프라다 15:30 → 1000 Trees → 마라탕 → ERA 19:30 → 양꼬치 → 짐 찾아 유어코브(숙소②)",stops:D2},
+ 2:{variants:{
+   A:{label:"A안 · 짐은 밤에 찾기",title:"서쪽 골목 오전, 프라다 오후, 공중 숲 노을, 서커스, 양꼬치",sum:"원동호텔 체크아웃(짐은 밤까지 보관) → 우캉·ICCF·둥량 → 점도덕 → 장위안 → 프라다 15:30 → 1000 Trees → 마라탕 → ERA 19:30 → 양꼬치 → 짐 찾아 유어코브(숙소②)",pros:"아침이 여유롭고 젠빙도 먹어요. 오전 이동이 짧아요.",cons:"밤 22:35에 원동호텔 들러 짐 찾고 23:05 유어코브 도착. 짐 보관은 첫날 체크인 때 확인.",stops:D2},
+   B:{label:"B안 · 아침에 짐부터 유어코브",title:"짐은 아침에 푸동 숙소로, 밤엔 양꼬치 뒤 바로 숙소",sum:"원동호텔 체크아웃 → 디디로 유어코브에 짐 맡기기 → 우캉·ICCF·둥량 → 점도덕 → 장위안 → 프라다 15:30 → 1000 Trees → 마라탕 → ERA 19:30 → 양꼬치 → 유어코브(숙소②)",pros:"짐 걱정이 없고, 밤엔 양꼬치 끝나면 바로 숙소로 가요.",cons:"오전에 푸동 갔다 서쪽으로 오느라 이동이 40분 늘어요. 젠빙은 밤에 포장하는 걸로 바뀌어요(선택).",stops:D2B}}},
  3:{title:"빌런이 성을 점령한 10주년 디즈니",sum:"07:00 숙소 옆 중국식 아침 → 디즈니 · 오전 인기 3종 → 파크 식사 → 핼러윈 → 불꽃 → (선택) 하이디라오",stops:disneyDay()},
  4:{title:"아침 일찍, 여유 있게 공항으로",sum:"유어코브(숙소②) 07:50 출발 → 11:10 비행기",stops:D4}
 };
@@ -852,7 +879,7 @@ function drawMap(stops,day){
 var labels=[],svgL="";
 
 /* ---------- 렌더 ---------- */
-var state={day:+(ls("sh-day2")||1)};
+var state={day:+(ls("sh-day2")||1),v2:(ls("sh-v2")==="B"?"B":"A")};
 if(!(state.day>=1&&state.day<=4))state.day=1;
 var elMust=document.getElementById("must"),elBar=document.getElementById("daybar"),elDay=document.getElementById("day");
 
@@ -896,22 +923,35 @@ var EXTRA={
   "류원샹 마라탕":{belly:"서커스 뒤 양꼬치 야식이 있으니 1인 300~400g만 담기.",pass:"끓이는 데 10분. 18:40엔 무조건 디디 호출(서커스 19:00 도착)."},
   "헌지우이치엔 양꼬치":{belly:"마라탕 3시간 뒤라 출출할 시간. 꼬치 10~15개 + 구운 빵 1개면 둘이 적당.",pass:"번호표 대기가 40분 넘으면 같은 건물 5층 하이디라오(07:00까지)로. 짐 찾기는 22:30 전후, 호텔 프런트는 24시간이라 조금 늦어도 괜찮아요."}
  },
+ "2B":{
+  "유어코브(숙소②)에 짐 맡기기":{pass:"짐만 맡기고 10:20엔 다시 디디. 프런트에서 오래 걸리면 우캉맨션은 차에서 보고 ICCF로 바로."},
+  "우캉맨션":{pass:"사진 15분. 11:10엔 ICCF로 걸어가기."},
+  "ICCF 가든":{belly:"커피만. 빵은 점심 뒤로 미뤄요.",pass:"12:00엔 둥량으로 출발. 11:35 넘어 도착하면 커피는 테이크아웃."},
+  "메종 둥량":{pass:"13:00엔 디디 호출(점심 13:15). 12:40 넘어 도착하면 1층만 보고 나오기."},
+  "점도덕":{belly:"딤섬 3~4접시 + 창펀 1개로 둘이 나눠요. 2시간 뒤 프라다 디저트가 있어요.",pass:"14:20엔 계산하고 디디."},
+  "장위안 산책":{pass:"15:20엔 프라다로 걸어가기(5분)."},
+  "헌지우이치엔 양꼬치":{belly:"마라탕 3시간 뒤라 출출할 시간. 꼬치 10~15개 + 구운 빵 1개면 둘이 적당.",pass:"번호표 대기가 40분 넘으면 같은 건물 5층 하이디라오(07:00까지)로."},
+  "젠빙 포장":{belly:"양꼬치 직후라 1장을 내일 아침용으로 포장하거나 아예 패스.",pass:"23:00 마감이라 22:45 넘으면 패스."}
+ },
  3:{
   "융허다왕":{belly:"油条 1개 + 豆浆 1잔 + 죽 하나를 둘이 나누면 충분. 디즈니 들어가면 간식을 계속 먹게 돼요.",pass:"07:25 넘으면 포장해서 디디 안에서 먹기."},
   "파크 식사":{belly:"점심은 가볍게 한 끼, 나머지는 간식 1~2개씩 나눠 먹기. 저녁은 불꽃놀이 전 18:30쯤."},
   "하이디라오":{belly:"디즈니 간식 뒤라 반 사이즈(半份)로 2~3가지만.",pass:"불꽃 끝나고 22:30 넘어 숙소 도착이면 패스하고 쉬어요."}
  }
 };
-function extraFor(day,name){var m=EXTRA[day]||{};for(var k in m){if(name.indexOf(k)===0)return m[k];}return null;}
+function extraFor(day,name){if(day===2&&state.v2==="B"){var mb=EXTRA["2B"]||{};for(var kb in mb){if(name.indexOf(kb)===0)return mb[kb];}}var m=EXTRA[day]||{};for(var k in m){if(name.indexOf(k)===0)return m[k];}return null;}
 function li(a){return a&&a.length?'<ul>'+a.map(function(x){return '<li>'+T(x)+'</li>'}).join("")+'</ul>':"";}
 function renderDay(){
-  var d=PLAN[state.day],stops=d.stops;
+  var d=PLAN[state.day],vbar="";
+  if(d.variants){var vk=state.v2;vbar='<div class="vbar" role="group" aria-label="일정 안 선택">'+Object.keys(d.variants).map(function(k){return '<button type="button" data-v="'+k+'" aria-pressed="'+(k===vk)+'">'+d.variants[k].label+'</button>';}).join("")+'</div>'
+    +'<p class="small vprocon"><b>장점</b> '+d.variants[vk].pros+'<br><b>단점</b> '+d.variants[vk].cons+'</p>';d=d.variants[vk];}
+  var stops=d.stops;
   labels=[];svgL="";
   var map=drawMap(stops,state.day);
   var resv=stops.filter(function(s){return s.resv}).map(function(s){return '<span class="chip resv">예약 · '+s.name.replace(/ \(.+\)$/,"")+'</span>'}).join("");
   var hotelName=state.day===1?"잠: 원동호텔(숙소①)":state.day===2?"원동호텔(숙소①) → 유어코브(숙소②)":"잠: 유어코브(숙소②)";
   if(state.day===4)hotelName="출발: 유어코브(숙소②)";
-  var h='<div class="day-head"><span class="tag">DAY '+state.day+' · '+DAYS[state.day-1].lbl+'</span><h3>'+d.title+'</h3><p class="small">'+d.sum+'</p><div class="chips"><span class="chip">'+hotelName+'</span>'+resv+'</div></div>';
+  var h='<div class="day-head"><span class="tag">DAY '+state.day+' · '+DAYS[state.day-1].lbl+'</span><h3>'+d.title+'</h3>'+vbar+'<p class="small">'+d.sum+'</p><div class="chips"><span class="chip">'+hotelName+'</span>'+resv+'</div></div>';
   var list=[];stops.forEach(function(s,i){if(s._n)list.push('<button type="button" data-go="'+i+'"><b>'+s._n+'</b>'+(P[s.p].n)+'</button>');});
   h+='<div class="map">'+map+'<div class="map-legend"><span><i></i>도보</span><span><i class="dash"></i>택시·지하철</span><span>숙 = 숙소 · 번호를 누르면 해당 일정으로 · 장소 이름·"구글" 버튼은 구글맵, "바이두" 버튼은 AMap으로 열려요. 현지 지하철 길찾기는 바이두가 정확해요</span></div>'+(list.length?'<div class="map-list">'+list.join("")+'</div>':'')+'</div>';
   h+='<div class="tl">';
@@ -950,6 +990,7 @@ function setDay(d,scroll){
 elMust.addEventListener("click",function(e){var b=e.target.closest("[data-jump]");if(b){setView("plan");}if(b)setDay(+b.getAttribute("data-jump"),"force");});
 elBar.addEventListener("click",function(e){var b=e.target.closest("[data-d]");if(b)setDay(+b.getAttribute("data-d"),true);});
 elDay.addEventListener("click",function(e){
+  var vb=e.target.closest("[data-v]"); if(vb){state.v2=vb.getAttribute("data-v");ls("sh-v2",state.v2);renderDay();return;}
   var b=e.target.closest(".daynav [data-d]"); if(b&&b.getAttribute("data-d")){setDay(+b.getAttribute("data-d"),"force");return;}
   var g=e.target.closest("[data-go]")||e.target.closest(".mk"); if(g){var i=g.getAttribute("data-go")||g.getAttribute("data-i"),el=document.getElementById("st"+i);
     if(el){el.scrollIntoView({behavior:"smooth",block:"start"});el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash");setTimeout(function(){el.classList.remove("flash")},1600);}}
