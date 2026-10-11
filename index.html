@@ -199,6 +199,10 @@ footer{padding-block:30px 0;color:var(--muted);font-size:12.5px;display:grid;gap
 .note-belly,.note-pass{font-size:13.5px;border-radius:10px;padding:8px 11px;line-height:1.55}
 .note-belly{background:var(--brass-soft)} .note-belly b{color:var(--brass);margin-right:4px}
 .note-pass{background:var(--red-soft)} .note-pass b{color:var(--red);margin-right:4px}
+.last3{display:grid;gap:8px;border-color:var(--jade);background:var(--jade-soft)}
+.last3 .msg{margin:6px 0 4px;padding:8px 10px;border-radius:10px;background:var(--surface);border:1px solid var(--line)}
+.last3 .msg .row{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.note-rain{font-size:13.5px;border-radius:10px;padding:8px 11px;line-height:1.55;background:var(--sky-soft)} .note-rain b{color:var(--sky);margin-right:4px}
 .resv-card{display:grid;gap:8px;border-color:var(--red);background:var(--red-soft)}
 .gm{font-size:12px;font-weight:700;color:var(--sky);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:1px 9px;white-space:nowrap;background:var(--surface);margin-left:4px;vertical-align:1px}
 .gm:hover{border-color:var(--sky)}
@@ -257,9 +261,9 @@ footer{padding-block:30px 0;color:var(--muted);font-size:12.5px;display:grid;gap
     <span class="eyebrow">BOOK NOW · 예약 체크</span>
     <h3>예약 꼭 해야 하는 것</h3>
     <ol class="list small">
-      <li><b>디즈니 10/17 티켓</b> · 공식 사이트·앱 또는 마이리얼트립 · 1인 ¥629 · 10/10 23:59까지 무료 환불</li>
-      <li><b>ERA 서커스 10/16 19:30</b> · 이미 예매했으면 확인만 · 클룩(공연 3일 전 확정) 또는 공식 사이트 · 환불 불가</li>
-      <li><b>Flair 루프탑 10/15</b> · 예약 없이 21:15쯤 워크인. 안 되면 THE BERRY(☎ +86 191 2168 3587)</li>
+      <li><b>디즈니 10/17 티켓</b> · 1인 ¥629 · <b>샀는지 꼭 확인</b>(무료 환불은 10/10에 끝남). 디즈니 앱에 두 사람 티켓 연결 + 구매할 때 쓴 여권 원본 챙기기</li>
+      <li><b>ERA 서커스 10/16 19:30</b> · 클룩은 공연 3일 전(<b>10/13</b>)에 확정 메일이 와요. 바우처 캡처해 두기 · 환불 불가</li>
+      <li><b>Flair 루프탑 10/15</b> · 예약 없이 워크인(유람선 타면 21:15, 안 타면 20:15). 안 되면 THE BERRY(☎ +86 191 2168 3587) · <b>복장: 반바지·슬리퍼·운동복 X</b>, 깔끔한 운동화는 OK</li>
       <li><b>미상 프라다 룽자이 10/16(금) 15:30 (예약함)</b> · 위챗 미니프로그램 「迷上Prada荣宅」 · ☎ +86 21 2218 0388 · mishang.rsvn@prada.com</li>
       <li><b>hoxa bistro 10/15 17:30 테라스</b> · ☎ 189 3093 9307 (테라스 자리 원하면 필수, 실내는 워크인 가능)</li>
     </ol>
@@ -269,6 +273,21 @@ footer{padding-block:30px 0;color:var(--muted);font-size:12.5px;display:grid;gap
       <li>하이디라오 바리춘톈 푸젠점 (10/17 22:40) · 하이디라오 앱/위챗 미니프로그램에서 원격 줄서기</li>
       <li>점도덕 (10/16 13:15) · 현장 번호표, 금요일 점심은 대기가 짧은 편</li>
     </ul>
+  </div>
+
+  <div class="card last3">
+    <span class="eyebrow">LAST CHECK · 10/12~14</span>
+    <h3>출발 전에 마지막으로 할 것 4가지</h3>
+    <ol class="list small">
+      <li><b>호텔에 미리 메시지</b> (익스피디아 앱 → 예약 → 숙소에 메시지). 아래 문장 복사해서 붙여 넣기.
+        <div class="msg"><div class="row"><strong>원동호텔(숙소①)</strong><button class="copy" data-copy="Hello, we arrive on Oct 15 around 14:00. Could we check in early if a room is ready? Also, on Oct 16 we would like to leave our luggage at the front desk after check-out and pick it up around 22:30. Thank you! / 您好，我们10月15日下午2点左右到达，如果有空房可以提前入住吗？另外10月16日退房后想把行李寄存在前台，晚上10点半左右来取。谢谢！">복사</button></div>
+        <p class="small muted">얼리 체크인 14:00 부탁 + 10/16 짐 보관 22:30까지(A안). B안이면 뒷문장은 지워도 돼요.</p></div>
+        <div class="msg"><div class="row"><strong>유어코브(숙소②)</strong><button class="copy" data-copy="Hello, we will arrive late on Oct 16, around 23:00. Please keep our reservation. (If we come in the morning around 10:15, could we leave our luggage before check-in?) Thank you! / 您好，我们10月16日晚上11点左右到达，请保留房间。（如果上午10点15分左右先到，可以先寄存行李吗？）谢谢！">복사</button></div>
+        <p class="small muted">밤 23시 도착 알림. B안이면 괄호 문장(오전 짐 맡기기)까지 그대로.</p></div></li>
+      <li><b>날씨 다시 보기 (10/14)</b> · 10/12 예보로는 <b>16일(금)·17일(토)에 소나기</b> 가능성. 우산 2개 + 디즈니용 우비(편의점 <x-zh r="위이" m="우비">雨衣</x-zh> ¥10 안팎, 파크 안은 비싸요).</li>
+      <li><b>Flair 갈 옷</b> · 첫날 그대로 루프탑까지 가니까 반바지·슬리퍼는 피하기. 밤 58층은 바람이 세서 얇은 겉옷 하나.</li>
+      <li><b>남경동로 디디 타는 곳</b> · <x-zh r="난징둥루 부싱제" m="난징동로 보행자거리">南京东路步行街</x-zh>는 차가 못 들어와요. 맥도날드·양꼬치 뒤 디디는 <x-zh r="시짱중루">西藏中路</x-zh>나 <x-zh r="주장루">九江路</x-zh> 쪽 큰길에서 호출.</li>
+    </ol>
   </div>
 
   <details class="fold" id="openFold">
@@ -321,7 +340,7 @@ footer{padding-block:30px 0;color:var(--muted);font-size:12.5px;display:grid;gap
   <div class="sec-head"><span class="eyebrow">BEFORE YOU GO</span><h2>가기 전에 할 일</h2><p class="lead">9/30 기준으로 남은 2주를 이렇게 쓰면 돼요.</p></div>
   <div class="todo-tl">
     <div class="step"><div class="when">지금 바로 (~10/3)</div><ul>
-      <li><strong>디즈니 10/17 티켓</strong> 공식가 1인 ¥629. 10/10 23:59까지 무료 환불, 그 뒤 1장당 ¥80 수수료. 여권 번호로 사고 당일 여권 원본으로 입장.</li>
+      <li><strong>디즈니 10/17 티켓</strong> 공식가 1인 ¥629. 무료 환불은 10/10에 끝났어요(이후 장당 ¥80 수수료). <b>구매했는지 확인!</b> 여권 번호로 사고 당일 여권 원본으로 입장.</li>
       <li><strong>예약 3곳</strong>: ① 프라다 룽자이 10/16 15:30(예약함) ② Flair는 10/15 워크인 — 위챗 미니프로그램 <x-zh r="미상 프라다 룽자이" m="프라다에 반하다">迷上Prada荣宅</x-zh> 또는 +86 21 2218 0388 ③ hoxa bistro 10/15 17:30 테라스 — 전화 189 3093 9307</li>
       <li>ERA 서커스 10/16 19:30 티켓 확인 (금요일은 60분판)</li>
       <li>트래블로그 체크카드 발급 신청 (배송 기간 있음)</li>
@@ -399,7 +418,8 @@ footer{padding-block:30px 0;color:var(--muted);font-size:12.5px;display:grid;gap
       <div><b>8일</b><span>10월 비 온 날</span></div><div><b>17:25</b><span>일몰 무렵</span></div>
     </div>
     <p class="small" style="margin-top:10px">낮엔 긴팔 한 장, 밤 강바람엔 얇은 바람막이나 가디건. 접이식 우산 하나씩. 디즈니 날은 2만 보 넘게 걸어요.</p>
-    <p class="src" style="margin-top:6px"><a href="https://travelweatherfairy.com/shanghai/october/" target="_blank" rel="noopener">여행날씨요정 10월 평년값</a> · 출발 3일 전 실제 예보 확인</p>
+    <p class="small" style="margin-top:6px"><b>10/12 예보:</b> 15일 흐림 19~25° · 16일 소나기 20~25° · 17일 소나기 20~26° (중국기상국·중국날씨망). 일정마다 <b>비 오면</b> 대안을 적어 뒀어요.</p>
+    <p class="src" style="margin-top:6px"><a href="https://weather.cma.cn/web/weather/58367.html" target="_blank" rel="noopener">중국기상국 상하이 예보</a> · <a href="https://travelweatherfairy.com/shanghai/october/" target="_blank" rel="noopener">여행날씨요정 10월 평년값</a> · 출발 3일 전 실제 예보 확인</p>
   </div>
 </section>
 
@@ -900,26 +920,28 @@ function renderBar(){
 /* 일정별 패스 기준(pass)과 먹는 양 조절(belly) */
 var EXTRA={
  1:{
-  "상탕 윈난샤오관":{belly:"오늘 첫 끼라 1인 1그릇 든든하게 OK. 저녁(hoxa 17:30)까지 3시간이라 곁들임(卤烤)은 1개만.",pass:"주문 후 음식까지 10~15분. 15:00 전후로 일어나면 돼요."},
+  "푸동공항 도착":{pass:"입국 줄이 길어 13:40 넘어 차를 타면 호텔엔 짐만 맡기고 바로 점심. 임시정부 입장 마감 16:30까지는 여유 있어요."},
+  "상탕 윈난샤오관":{belly:"KE887 기내식(점심)을 먹고 와서 배가 덜 고플 수 있어요. 둘이 1그릇 + 곁들임 하나로 시작해서 모자라면 추가.",pass:"주문 후 음식까지 10~15분. 15:00 전후로 일어나면 돼요."},
   "릴리안 에그타르트":{belly:"점심 직후라 1개 사서 둘이 반씩.",pass:"줄이 길면 패스 → 바로 디디로 임시정부. 시간 여유는 있어요."},
   "대한민국 임시정부":{pass:"입장 마감 16:30. 16:05쯤 나와서 신천지로 걸어가요."},
   "신천지 산책":{belly:"저녁이 1시간 뒤라 카페에선 음료만.",pass:"17:10엔 디디 호출(hoxa 17:30, 일몰 17:25)."},
   "hoxa bistro":{belly:"점심 3시간 뒤라 보통 양 OK. 大盘鸡 小份(작은 사이즈) + 手抓饭이나 양꼬치 중 하나면 둘이 딱 맞아요.",pass:"신장요리는 나오는 데 20~30분. 18:50엔 계산하고 나오기."},
   "맥도날드 파이":{belly:"저녁 직후라 파이 1개만 사서 나눠 먹거나 포장.",pass:"19:10 넘으면 패스 → 바로 와이탄."},
-  "황푸강 야간 유람선":{pass:"20:15 넘어서 출발하는 배밖에 없으면 패스. 21:00엔 푸동으로 출발."},
+  "와이탄 야경 산책":{rain:"비가 오면 와이탄은 짧게 사진만 찍고 유람선도 패스. 바로 Flair(실내 바 있음)로 가거나, 강변이 잘 보이는 실내 THE BERRY로."},
+  "황푸강 야간 유람선":{pass:"20:15 넘어서 출발하는 배밖에 없으면 패스. 21:00엔 푸동으로 출발.<br><b>안 타기로 하면</b> 20:00에 바로 디디로 Flair → 20:15 워크인. 사람이 적은 시간이라 성공 확률이 높고, 22:00 소등 전까지 와이탄 조명을 1시간 넘게 봐요."},
   "Flair 루프탑":{belly:"저녁·간식을 다 먹은 뒤라 칵테일만. 안주는 안 시켜도 돼요.",cases:{
-    ok:"21:15 입장 → 와이탄 조명 꺼지는 22:00 전에 테라스에서 사진 → 칵테일 1~2잔 → 23:00 디디로 원동호텔(20분 · ¥40).",
+    ok:"21:15 입장(유람선 안 탔으면 20:15) → 와이탄 조명 꺼지는 22:00 전에 테라스에서 사진 → 칵테일 1~2잔 → 23:00 디디로 원동호텔(20분 · ¥40).",
     ng:"대기가 30분 넘거나 최소 소비 테이블만 남았으면 바로 포기하고 둘 중 하나로. ① 걸어서 7분 <b>THE BERRY</b>(정대광장 9층, 와이탄 정면 테라스·라이브 밴드, 02:00까지) ② 바가 싫으면 리츠 앞 <b>푸동 강변 산책로(浦东滨江)</b>에서 와이탄 야경 보고 22:30 디디로 숙소."}}
  },
  2:{
   "젠빙 한 장":{belly:"오늘은 먹을 게 많아요(딤섬·프라다·마라탕·양꼬치). 1장을 둘이 나눠 먹기.",pass:"10:15 넘으면 패스 → 바로 우캉맨션."},
-  "우캉맨션":{pass:"사진 15~20분. 11:00엔 ICCF로 걸어가기."},
-  "ICCF 가든":{belly:"커피만. 빵은 점심 뒤로 미뤄요.",pass:"11:50엔 둥량으로 출발. 11:20 넘어 도착하면 커피는 테이크아웃."},
+  "우캉맨션":{pass:"사진 15~20분. 11:00엔 ICCF로 걸어가기.",rain:"비가 세면 차 안에서 보고 지나가요. ICCF 앞에 바로 내려서 실내 카페로."},
+  "ICCF 가든":{belly:"커피만. 빵은 점심 뒤로 미뤄요.",pass:"11:50엔 둥량으로 출발. 11:20 넘어 도착하면 커피는 테이크아웃.",rain:"정원은 짧게 보고 실내 카페·매장 위주로. 둥량까지 걷지 말고 디디."},
   "메종 둥량":{pass:"12:55엔 디디 호출해야 13:10 점심. 12:30 넘어 도착하면 1층만 보고 나오기."},
   "점도덕":{belly:"딤섬 3~4접시 + 창펀 1개로 둘이 나눠요. 2시간 뒤 프라다 디저트가 있어요.",pass:"딤섬은 하나씩 나와서 40분쯤 걸려요. 14:15엔 계산하고 디디."},
-  "장위안 산책":{pass:"15:20엔 프라다로 걸어가기(5분)."},
+  "장위안 산책":{pass:"15:20엔 프라다로 걸어가기(5분).",rain:"골목은 짧게, 대신 매장 안 구경이나 바로 옆 〔静安嘉里中心|징안 자리중신|징안 케리센터〕 실내에서 시간 보내기."},
   "미상 프라다 룽자이":{belly:"디저트 2개 + 음료 2잔이면 충분. 애프터눈티 세트(1인 ¥488)는 양이 많아서 2시간 반 뒤 마라탕이 안 들어가요.",pass:"16:40엔 디디 호출(1000 Trees 일몰 17:25)."},
-  "1000 Trees":{pass:"17:45엔 마라탕으로 걷기 시작. 해 진 직후(17:30) 사진이 제일 좋아요."},
+  "1000 Trees":{pass:"17:45엔 마라탕으로 걷기 시작. 해 진 직후(17:30) 사진이 제일 좋아요.",rain:"강변 사진은 우산 쓰고 5분만. 몰 안 계단식 테라스(지붕 있는 층)에서 구경하다가 마라탕까지는 디디(5분)."},
   "류원샹 마라탕":{belly:"서커스 뒤 양꼬치 야식이 있으니 1인 300~400g만 담기.",pass:"끓이는 데 10분. 18:40엔 무조건 디디 호출(서커스 19:00 도착)."},
   "헌지우이치엔 양꼬치":{belly:"마라탕 3시간 뒤라 출출할 시간. 꼬치 10~15개 + 구운 빵 1개면 둘이 적당.",pass:"번호표 대기가 40분 넘으면 같은 건물 5층 하이디라오(07:00까지)로. 짐 찾기는 22:30 전후, 호텔 프런트는 24시간이라 조금 늦어도 괜찮아요."}
  },
@@ -929,17 +951,20 @@ var EXTRA={
   "ICCF 가든":{belly:"커피만. 빵은 점심 뒤로 미뤄요.",pass:"12:00엔 둥량으로 출발. 11:35 넘어 도착하면 커피는 테이크아웃."},
   "메종 둥량":{pass:"13:00엔 디디 호출(점심 13:15). 12:40 넘어 도착하면 1층만 보고 나오기."},
   "점도덕":{belly:"딤섬 3~4접시 + 창펀 1개로 둘이 나눠요. 2시간 뒤 프라다 디저트가 있어요.",pass:"14:20엔 계산하고 디디."},
-  "장위안 산책":{pass:"15:20엔 프라다로 걸어가기(5분)."},
-  "헌지우이치엔 양꼬치":{belly:"마라탕 3시간 뒤라 출출할 시간. 꼬치 10~15개 + 구운 빵 1개면 둘이 적당.",pass:"번호표 대기가 40분 넘으면 같은 건물 5층 하이디라오(07:00까지)로."},
+  "장위안 산책":{pass:"15:20엔 프라다로 걸어가기(5분).",rain:"골목은 짧게, 매장 안 구경이나 옆 징안 케리센터 실내에서."},
+  "헌지우이치엔 양꼬치":{belly:"마라탕 3시간 뒤라 출출할 시간. 꼬치 10~15개 + 구운 빵 1개면 둘이 적당.",pass:"번호표 대기가 40분 넘으면 같은 건물 5층 하이디라오(07:00까지)로. 숙소 갈 디디는 보행자거리 밖 〔西藏中路|시짱중루〕 쪽에서 호출."},
   "젠빙 포장":{belly:"양꼬치 직후라 1장을 내일 아침용으로 포장하거나 아예 패스.",pass:"23:00 마감이라 22:45 넘으면 패스."}
  },
  3:{
   "융허다왕":{belly:"油条 1개 + 豆浆 1잔 + 죽 하나를 둘이 나누면 충분. 디즈니 들어가면 간식을 계속 먹게 돼요.",pass:"07:25 넘으면 포장해서 디디 안에서 먹기."},
+  "오전 인기 어트랙션":{rain:"비 오면 오히려 줄이 짧아져요. 트론은 비가 세면 운행을 멈추니 실내 기종(캐리비안·소어링·주토피아) 먼저. 우비 입고 다니기."},
   "파크 식사":{belly:"점심은 가볍게 한 끼, 나머지는 간식 1~2개씩 나눠 먹기. 저녁은 불꽃놀이 전 18:30쯤."},
+  "ILLUMINATE":{pass:"21:15 회차 끝나면 디디가 한꺼번에 몰려 30분 넘게 기다릴 수 있어요. 일찍 쉬고 싶으면 20:00 회차를 보고 나오기. 지하철로 가면 11호선 〔迪士尼|디스니〕역부터, 바이두 길찾기로 확인(약 1시간)."},
   "하이디라오":{belly:"디즈니 간식 뒤라 반 사이즈(半份)로 2~3가지만.",pass:"불꽃 끝나고 22:30 넘어 숙소 도착이면 패스하고 쉬어요."}
  }
 };
-function extraFor(day,name){if(day===2&&state.v2==="B"){var mb=EXTRA["2B"]||{};for(var kb in mb){if(name.indexOf(kb)===0)return mb[kb];}}var m=EXTRA[day]||{};for(var k in m){if(name.indexOf(k)===0)return m[k];}return null;}
+function findEx(m,name){m=m||{};for(var k in m){if(name.indexOf(k)===0)return m[k];}return null;}
+function extraFor(day,name){var base=findEx(EXTRA[day],name);if(day===2&&state.v2==="B"){var bb=findEx(EXTRA["2B"],name);if(bb){var r={};for(var k in base||{})r[k]=base[k];for(var j in bb)r[j]=bb[j];return r;}}return base;}
 function li(a){return a&&a.length?'<ul>'+a.map(function(x){return '<li>'+T(x)+'</li>'}).join("")+'</ul>':"";}
 function renderDay(){
   var d=PLAN[state.day],vbar="";
@@ -953,7 +978,7 @@ function renderDay(){
   if(state.day===4)hotelName="출발: 유어코브(숙소②)";
   var h='<div class="day-head"><span class="tag">DAY '+state.day+' · '+DAYS[state.day-1].lbl+'</span><h3>'+d.title+'</h3>'+vbar+'<p class="small">'+d.sum+'</p><div class="chips"><span class="chip">'+hotelName+'</span>'+resv+'</div></div>';
   var list=[];stops.forEach(function(s,i){if(s._n)list.push('<button type="button" data-go="'+i+'"><b>'+s._n+'</b>'+(P[s.p].n)+'</button>');});
-  h+='<div class="map">'+map+'<div class="map-legend"><span><i></i>도보</span><span><i class="dash"></i>택시·지하철</span><span>숙 = 숙소 · 번호를 누르면 해당 일정으로 · 장소 이름·"구글" 버튼은 구글맵, "바이두" 버튼은 AMap으로 열려요. 현지 지하철 길찾기는 바이두가 정확해요</span></div>'+(list.length?'<div class="map-list">'+list.join("")+'</div>':'')+'</div>';
+  h+='<div class="map">'+map+'<div class="map-legend"><span><i></i>도보</span><span><i class="dash"></i>택시·지하철</span><span>숙 = 숙소 · 번호를 누르면 해당 일정으로 · 장소 이름·"구글" 버튼은 구글맵, "바이두" 버튼은 바이두 지도로 열려요. 현지 지하철 길찾기는 바이두가 정확해요</span></div>'+(list.length?'<div class="map-list">'+list.join("")+'</div>':'')+'</div>';
   h+='<div class="tl">';
   stops.forEach(function(s,i){
     if(s.mv&&i>0){var dest=gq(s),orig="",oc=null,on="";for(var j=i-1;j>=0;j--){if(gq(stops[j])){orig=gq(stops[j]);oc=cq(stops[j]);on=aq(stops[j]);break;}}
@@ -972,6 +997,7 @@ function renderDay(){
     if(s.fam||s.tip){h+='<dl>'; if(s.fam)h+='<dt>유명한 것</dt><dd>'+li(s.fam)+'</dd>'; if(s.tip)h+='<dt>'+(s.fam?'이렇게 즐겨요':'메모')+'</dt><dd>'+li(s.tip)+'</dd>'; h+='</dl>';}
     if(ex&&ex.belly) h+='<p class="note-belly"><b>배 조절</b> '+T(ex.belly)+'</p>';
     if(ex&&ex.pass) h+='<p class="note-pass"><b>패스 기준</b> '+T(ex.pass)+'</p>';
+    if(ex&&ex.rain) h+='<p class="note-rain"><b>비 오면</b> '+T(ex.rain)+'</p>';
     if(ex&&ex.cases) h+='<div class="cases"><p class="case ok"><b>워크인 성공하면</b> '+T(ex.cases.ok)+'</p><p class="case ng"><b>실패하면</b> '+T(ex.cases.ng)+'</p></div>';
     if(s.meta) h+='<p class="meta">'+T(s.meta)+'</p>';
     h+='</div></article>';
